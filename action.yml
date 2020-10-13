@@ -26,13 +26,14 @@ on:
 
 runs:
   using: "composite"
-  shell: bash
   steps:
     - name: Debug show job inputs
+      shell: bash
       run: |
         echo ${{ job.inputs }}
 
     - name: Set filename prefix
+      shell: bash
       id: filename
       run: |
         echo "::set-output name=prefix::AltiusRupert_rbarrow-dev-ed_master"
@@ -46,18 +47,22 @@ runs:
 
     - name: Get Test Results
       id: testresults
+      shell: bash
       run: |
         echo "::set-output name=badge_label::$(./scripts/badges/testresults_badge_label.sh)"
     - name: Get Code Coverage
       id: codecoverage
+      shell: bash
       run: |
         echo "::set-output name=badge_label::$(./scripts/badges/codecoverage_badge_label.sh)"
     - name: Get PMD Analysis
       id: pmd
+      shell: bash
       run: |
         echo "::set-output name=badge_label::$(./scripts/badges/pmd_badge_label.sh)"
     - name: Get Health Check
       id: healthcheck
+      shell: bash
       run: |
         echo "::set-output name=badge_label::$(./scripts/badges/healthcheck_badge_label.sh)"
     - name: Test Results - create badge

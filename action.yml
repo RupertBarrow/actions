@@ -24,15 +24,10 @@ on:
   repository_dispatch:
     types: [create_test_badges]
 
-jobs:    
-  createbadges:
-    runs-on: ubuntu-latest
-    name: Create test badges
-    env:
-      AUTH:      ${{ job.inputs.gisttoken }}
-      GIST_ID:   ${{ job.inputs.gistid    }}
-    steps:      
-      - name: Debug : show job inputs
+runs:
+  using: "composite"
+    steps:
+      - name: Debug show job inputs
         run: |
           echo ${{ job.inputs }}
 
@@ -40,6 +35,7 @@ jobs:
         id: filename
         run: |
           echo "::set-output name=prefix::AltiusRupert_rbarrow-dev-ed_master"
+
       - name: "Checkout code"
         uses: actions/checkout@v2
         with:

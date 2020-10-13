@@ -26,6 +26,7 @@ on:
 
 runs:
   using: "composite"
+  shell: bash
   steps:
     - name: Debug show job inputs
       run: |

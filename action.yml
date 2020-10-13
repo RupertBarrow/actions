@@ -23,7 +23,9 @@ runs:
     - name: Debug show job inputs
       shell: bash
       run: |
-        echo ${{ job.inputs }}
+        pwd
+        ls -al
+        ls scripts
 
     - name: Set filename prefix
       shell: bash

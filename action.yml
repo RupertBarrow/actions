@@ -65,11 +65,12 @@ runs:
       shell: bash
       run: |
         echo "::set-output name=badge_label::$(./scripts/badges/healthcheck_badge_label.sh)"
-    - name: Test Results - create badge
+
+- name: Test Results - create badge
       uses: schneegans/dynamic-badges-action@v1.0.0
       with:
-        auth: $AUTH
-        gistID: $GISTID
+        auth: $INPUT_GISTTOKEN
+        gistID: $INPUT_GISTID
         filename: ${{ steps.filename.outputs.prefix }}_testresults_badge.json
         label: Apex Tests
         message: "${{ steps.testresults.outputs.badge_label }}"
@@ -78,8 +79,8 @@ runs:
     - name: Code Coverage - create badge
       uses: schneegans/dynamic-badges-action@v1.0.0
       with:
-        auth: $AUTH
-        gistID: $GISTID
+        auth: $INPUT_GISTTOKEN
+        gistID: $INPUT_GISTID
         filename: ${{ steps.filename.outputs.prefix }}_codecoverage_badge.json
         label: Apex Code Coverage
         message: "${{ steps.codecoverage.outputs.badge_label }}"
@@ -88,8 +89,8 @@ runs:
     - name: PMD Analysis - create badge
       uses: schneegans/dynamic-badges-action@v1.0.0
       with:
-        auth: $AUTH
-        gistID: $GISTID
+        auth: $INPUT_GISTTOKEN
+        gistID: $INPUT_GISTID
         filename: ${{ steps.filename.outputs.prefix }}_pmd_badge.json
         label: PMD Analysis
         message: "${{ steps.pmd.outputs.badge_label }}"
@@ -98,8 +99,8 @@ runs:
     - name: Health Check - create badge
       uses: schneegans/dynamic-badges-action@v1.0.0
       with:
-        auth: $AUTH
-        gistID: $GISTID
+        auth: $INPUT_GISTTOKEN
+        gistID: $INPUT_GISTID
         filename: ${{ steps.filename.outputs.prefix }}_healthcheck_badge.json
         label: Health Check
         message: "${{ steps.healthcheck.outputs.badge_label }}"

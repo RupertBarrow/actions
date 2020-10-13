@@ -21,6 +21,10 @@ jobs:
       AUTH:      525d549245608cc0cf0e7c7860d4a9bd5f9dc36d
       GIST_ID:   18badd1cddae0dabd361d6235f49b77c
     steps:      
+      - name: Debug : show context
+        run: |
+          echo ${{ github.event }}
+
       - name: Set filename prefix
         id: filename
         run: |

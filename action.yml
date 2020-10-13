@@ -50,7 +50,7 @@ runs:
       id: pmd
       shell: bash
       run: |
-        echo "::set-output name=badge_label::$(${{ github.action_path }}/scripts/pmd_badge_label.sh ./reports/pms.json)"
+        echo "::set-output name=badge_label::$(${{ github.action_path }}/scripts/pmd_badge_label.sh ./reports/pmd.json)"
     - name: Get Health Check
       id: healthcheck
       shell: bash

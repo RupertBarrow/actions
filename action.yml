@@ -28,6 +28,7 @@ runs:
         ls ./scripts/badges/
         ls ./reports/
         ./scripts/badges/testresults_badge_label.sh
+        ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/testresults.json
 
     - name: Set filename prefix
       shell: bash
@@ -39,20 +40,20 @@ runs:
       id: testresults
       shell: bash
       run: |
-        echo "::set-output name=badge_label::$(./scripts/badges/testresults_badge_label.sh)"
+        echo "::set-output name=badge_label::$(${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/testresults.json)"
     - name: Get Code Coverage
       id: codecoverage
       shell: bash
       run: |
-        echo "::set-output name=badge_label::$(./scripts/badges/codecoverage_badge_label.sh)"
+        echo "::set-output name=badge_label::$(${{ github.action_path }}/scripts/codecoverage_badge_label.sh ./reports/codecoverage.json)"
     - name: Get PMD Analysis
       id: pmd
       shell: bash
       run: |
-        echo "::set-output name=badge_label::$(./scripts/badges/pmd_badge_label.sh)"
+        echo "::set-output name=badge_label::$(${{ github.action_path }}/scripts/pmd_badge_label.sh ./reports/pms.json)"
     - name: Get Health Check
       id: healthcheck
       shell: bash
       run: |
-        echo "::set-output name=badge_label::$(./scripts/badges/healthcheck_badge_label.sh)"
+        echo "::set-output name=badge_label::$(${{ github.action_path }}/scripts/healthcheck_badge_label.sh ./reports/healthcheck.json)"
 

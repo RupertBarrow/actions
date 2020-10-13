@@ -1,4 +1,4 @@
-name: Create test badges
+name: Create Salesforce test badges
 
 # Parameters : 
 #    secrets.DYNAMIC_BADGES_GIST_TOKEN

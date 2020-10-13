@@ -18,13 +18,13 @@ inputs:
     required: true
 
 outputs:
-  testresults_badge:label:
+  testresults_badge_label:
     value: "${{ steps.testresults.outputs.badge_label }}"
-  codecoverage_badge:label:
+  codecoverage_badge_label:
     value: "${{ steps.codecoverage.outputs.badge_label }}"
-  pmd_badge:label:
-    value: "${{ steps.pms.outputs.badge_label }}"
-  healthcheck_badge:label:
+  pmd_badge_label:
+    value: "${{ steps.pmd.outputs.badge_label }}"
+  healthcheck_badge_label:
     value: "${{ steps.healthcheck.outputs.badge_label }}"
 
 runs:
@@ -37,8 +37,7 @@ runs:
     - name: Set filename prefix
       shell: bash
       id: filename
-      run: |
-        echo "::set-output name=prefix::AltiusRupert_rbarrow-dev-ed_master"
+      run: echo "::set-output name=prefix::AltiusRupert_rbarrow-dev-ed_master"
 
     - name: Get Test Results
       id: testresults

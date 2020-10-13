@@ -25,7 +25,9 @@ runs:
       run: |
         pwd
         ls -al
-        ls scripts
+        ls ./scripts/badges/
+        ls ./reports/
+        ./scripts/badges/testresults_badge_label.sh
 
     - name: Set filename prefix
       shell: bash

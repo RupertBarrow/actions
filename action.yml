@@ -25,7 +25,7 @@ runs:
       run: |
         which bash
         ./scripts/badges/testresults_badge_label.sh
-        bash ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/testresults.json
+        bash ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/codecoverage.json
 
     - name: Set filename prefix
       shell: bash
@@ -37,7 +37,7 @@ runs:
       id: testresults
       shell: bash
       run: |
-        echo "::set-output name=badge_label::$(bash ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/testresults.json)"
+        echo "::set-output name=badge_label::$(bash ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/codecoverage.json)"
     - name: Get Code Coverage
       id: codecoverage
       shell: bash

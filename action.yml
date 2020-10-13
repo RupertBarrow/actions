@@ -17,13 +17,22 @@ inputs:
     description: AUth token to update that Gist
     required: true
 
+outputs:
+  testresults_badge:label:
+    value: "${{ steps.testresults.outputs.badge_label }}"
+  codecoverage_badge:label:
+    value: "${{ steps.codecoverage.outputs.badge_label }}"
+  pmd_badge:label:
+    value: "${{ steps.pms.outputs.badge_label }}"
+  healthcheck_badge:label:
+    value: "${{ steps.healthcheck.outputs.badge_label }}"
+
 runs:
   using: "composite"
   steps:
     - name: Debug show job inputs
       shell: bash
-      run: |
-        bash ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/codecoverage.json
+      run: bash ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/codecoverage.json
 
     - name: Set filename prefix
       shell: bash
@@ -34,21 +43,17 @@ runs:
     - name: Get Test Results
       id: testresults
       shell: bash
-      run: |
-        echo "::set-output name=badge_label::$(pwd; bash ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/codecoverage.json)"
+      run: echo "::set-output name=badge_label::$(pwd; bash ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/codecoverage.json)"
     - name: Get Code Coverage
       id: codecoverage
       shell: bash
-      run: |
-        echo "::set-output name=badge_label::$(pwd; bash ${{ github.action_path }}/scripts/codecoverage_badge_label.sh ./reports/codecoverage.json)"
+      run: echo "::set-output name=badge_label::$(pwd; bash ${{ github.action_path }}/scripts/codecoverage_badge_label.sh ./reports/codecoverage.json)"
     - name: Get PMD Analysis
       id: pmd
       shell: bash
-      run: |
-        echo "::set-output name=badge_label::$(pwd; bash ${{ github.action_path }}/scripts/pmd_badge_label.sh ./reports/pmd.json)"
+      run: echo "::set-output name=badge_label::$(pwd; bash ${{ github.action_path }}/scripts/pmd_badge_label.sh ./reports/pmd.json)"
     - name: Get Health Check
       id: healthcheck
       shell: bash
-      run: |
-        echo "::set-output name=badge_label::$(pwd; bash ${{ github.action_path }}/scripts/healthcheck_badge_label.sh ./reports/healthcheck.json)"
+      run: echo "::set-output name=badge_label::$(pwd; bash ${{ github.action_path }}/scripts/healthcheck_badge_label.sh ./reports/healthcheck.json)"
 

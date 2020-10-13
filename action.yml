@@ -1,20 +1,11 @@
 name: Create Salesforce test badges
 
-# Parameters : 
-#    secrets.DYNAMIC_BADGES_GIST_TOKEN
-#    gistID: 18badd1cddae0dabd361d6235f49b77c
-#    scripts
-#    4 test reports data files
-#
-#       AUTH:      525d549245608cc0cf0e7c7860d4a9bd5f9dc36d
-#       GIST_ID:   18badd1cddae0dabd361d6235f49b77c
-
 inputs:
   gistid:
     description: ID of the Gist in which to publish results
     required: true
   gisttoken:
-    description: AUth token to update that Gist
+    description: Auth token to update that Gist
     required: true
 
 outputs:
@@ -30,18 +21,22 @@ outputs:
 runs:
   using: "composite"
   steps:
+
     - name: Get Test Results
       id: testresults
       shell: bash
       run: echo "::set-output name=badge_label::$(bash ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/codecoverage.json)"
+
     - name: Get Code Coverage
       id: codecoverage
       shell: bash
       run: echo "::set-output name=badge_label::$(bash ${{ github.action_path }}/scripts/codecoverage_badge_label.sh ./reports/codecoverage.json)"
+
     - name: Get PMD Analysis
       id: pmd
       shell: bash
       run: echo "::set-output name=badge_label::$(bash ${{ github.action_path }}/scripts/pmd_badge_label.sh ./reports/pmd.json)"
+
     - name: Get Health Check
       id: healthcheck
       shell: bash

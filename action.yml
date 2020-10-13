@@ -17,13 +17,6 @@ inputs:
     description: AUth token to update that Gist
     required: true
 
-on:
-  push:
-    paths:
-    - 'reports/**'
-  repository_dispatch:
-    types: [create_test_badges]
-
 runs:
   using: "composite"
   steps:

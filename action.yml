@@ -5,6 +5,17 @@ name: Create Salesforce test badges
 #    gistID: 18badd1cddae0dabd361d6235f49b77c
 #    scripts
 #    4 test reports data files
+#
+#       AUTH:      525d549245608cc0cf0e7c7860d4a9bd5f9dc36d
+#       GIST_ID:   18badd1cddae0dabd361d6235f49b77c
+
+inputs:
+  gistid:
+    description: ID of the Gist in which to publish results
+    required: true
+  gisttoken:
+    description: AUth token to update that Gist
+    required: true
 
 on:
   push:
@@ -18,12 +29,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Create test badges
     env:
-      AUTH:      525d549245608cc0cf0e7c7860d4a9bd5f9dc36d
-      GIST_ID:   18badd1cddae0dabd361d6235f49b77c
+      AUTH:      ${{ job.inputs.gisttoken }}
+      GIST_ID:   ${{ job.inputs.gistid    }}
     steps:      
-      - name: Debug : show context
+      - name: Debug : show job inputs
         run: |
-          echo ${{ github.event }}
+          echo ${{ job.inputs }}
 
       - name: Set filename prefix
         id: filename

@@ -18,19 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     name: Create test badges
     env:
-      OWNER:      ${{ github.repository_owner }}
-      REPO:       ${{ github.event.repository.name }}
-      BRANCH:     ${{ github.event.branch }}
+      AUTH:      525d549245608cc0cf0e7c7860d4a9bd5f9dc36d
+      GIST_ID:   18badd1cddae0dabd361d6235f49b77c
     steps:      
-      - name: Dump github context - for debug, just in case
-        run:   echo "$GITHUB_CONTEXT"
-        shell: bash
-        env:
-         GITHUB_CONTEXT: ${{ toJson(github) }}
       - name: Set filename prefix
         id: filename
         run: |
-          echo "::set-output name=prefix::${{ github.repository_owner }}_${{ github.event.repository.name }}_${{ github.event.branch }}"
+          echo "::set-output name=prefix::AltiusRupert_rbarrow-dev-ed_master"
       - name: "Checkout code"
         uses: actions/checkout@v2
         with:
@@ -57,8 +51,8 @@ jobs:
       - name: Test Results - create badge
         uses: schneegans/dynamic-badges-action@v1.0.0
         with:
-          auth: ${{ secrets.DYNAMIC_BADGES_GIST_TOKEN }}
-          gistID: 18badd1cddae0dabd361d6235f49b77c
+          auth: $AUTH
+          gistID: $GISTID
           filename: ${{ steps.filename.outputs.prefix }}_testresults_badge.json
           label: Apex Tests
           message: "${{ steps.testresults.outputs.badge_label }}"
@@ -67,8 +61,8 @@ jobs:
       - name: Code Coverage - create badge
         uses: schneegans/dynamic-badges-action@v1.0.0
         with:
-          auth: ${{ secrets.DYNAMIC_BADGES_GIST_TOKEN }}
-          gistID: 18badd1cddae0dabd361d6235f49b77c
+          auth: $AUTH
+          gistID: $GISTID
           filename: ${{ steps.filename.outputs.prefix }}_codecoverage_badge.json
           label: Apex Code Coverage
           message: "${{ steps.codecoverage.outputs.badge_label }}"
@@ -77,8 +71,8 @@ jobs:
       - name: PMD Analysis - create badge
         uses: schneegans/dynamic-badges-action@v1.0.0
         with:
-          auth: ${{ secrets.DYNAMIC_BADGES_GIST_TOKEN }}
-          gistID: 18badd1cddae0dabd361d6235f49b77c
+          auth: $AUTH
+          gistID: $GISTID
           filename: ${{ steps.filename.outputs.prefix }}_pmd_badge.json
           label: PMD Analysis
           message: "${{ steps.pmd.outputs.badge_label }}"
@@ -87,8 +81,8 @@ jobs:
       - name: Health Check - create badge
         uses: schneegans/dynamic-badges-action@v1.0.0
         with:
-          auth: ${{ secrets.DYNAMIC_BADGES_GIST_TOKEN }}
-          gistID: 18badd1cddae0dabd361d6235f49b77c
+          auth: $AUTH
+          gistID: $GISTID
           filename: ${{ steps.filename.outputs.prefix }}_healthcheck_badge.json
           label: Health Check
           message: "${{ steps.healthcheck.outputs.badge_label }}"

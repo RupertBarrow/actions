@@ -26,77 +26,77 @@ on:
 
 runs:
   using: "composite"
-    steps:
-      - name: Debug show job inputs
-        run: |
-          echo ${{ job.inputs }}
+  steps:
+    - name: Debug show job inputs
+      run: |
+        echo ${{ job.inputs }}
 
-      - name: Set filename prefix
-        id: filename
-        run: |
-          echo "::set-output name=prefix::AltiusRupert_rbarrow-dev-ed_master"
+    - name: Set filename prefix
+      id: filename
+      run: |
+        echo "::set-output name=prefix::AltiusRupert_rbarrow-dev-ed_master"
 
-      - name: "Checkout code"
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false  # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
-          fetch-depth: 0              # otherwise, you will failed to push refs to dest repo
+    - name: "Checkout code"
+      uses: actions/checkout@v2
+      with:
+        persist-credentials: false  # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+        fetch-depth: 0              # otherwise, you will failed to push refs to dest repo
 
 
-      - name: Get Test Results
-        id: testresults
-        run: |
-          echo "::set-output name=badge_label::$(./scripts/badges/testresults_badge_label.sh)"
-      - name: Get Code Coverage
-        id: codecoverage
-        run: |
-          echo "::set-output name=badge_label::$(./scripts/badges/codecoverage_badge_label.sh)"
-      - name: Get PMD Analysis
-        id: pmd
-        run: |
-          echo "::set-output name=badge_label::$(./scripts/badges/pmd_badge_label.sh)"
-      - name: Get Health Check
-        id: healthcheck
-        run: |
-          echo "::set-output name=badge_label::$(./scripts/badges/healthcheck_badge_label.sh)"
-      - name: Test Results - create badge
-        uses: schneegans/dynamic-badges-action@v1.0.0
-        with:
-          auth: $AUTH
-          gistID: $GISTID
-          filename: ${{ steps.filename.outputs.prefix }}_testresults_badge.json
-          label: Apex Tests
-          message: "${{ steps.testresults.outputs.badge_label }}"
-          namedLogo: salesforce
-          color: blue
-      - name: Code Coverage - create badge
-        uses: schneegans/dynamic-badges-action@v1.0.0
-        with:
-          auth: $AUTH
-          gistID: $GISTID
-          filename: ${{ steps.filename.outputs.prefix }}_codecoverage_badge.json
-          label: Apex Code Coverage
-          message: "${{ steps.codecoverage.outputs.badge_label }}"
-          namedLogo: salesforce
-          color: orange
-      - name: PMD Analysis - create badge
-        uses: schneegans/dynamic-badges-action@v1.0.0
-        with:
-          auth: $AUTH
-          gistID: $GISTID
-          filename: ${{ steps.filename.outputs.prefix }}_pmd_badge.json
-          label: PMD Analysis
-          message: "${{ steps.pmd.outputs.badge_label }}"
-          namedLogo: salesforce
-          color: green
-      - name: Health Check - create badge
-        uses: schneegans/dynamic-badges-action@v1.0.0
-        with:
-          auth: $AUTH
-          gistID: $GISTID
-          filename: ${{ steps.filename.outputs.prefix }}_healthcheck_badge.json
-          label: Health Check
-          message: "${{ steps.healthcheck.outputs.badge_label }}"
-          namedLogo: salesforce
-          color: darkblue
-          
+    - name: Get Test Results
+      id: testresults
+      run: |
+        echo "::set-output name=badge_label::$(./scripts/badges/testresults_badge_label.sh)"
+    - name: Get Code Coverage
+      id: codecoverage
+      run: |
+        echo "::set-output name=badge_label::$(./scripts/badges/codecoverage_badge_label.sh)"
+    - name: Get PMD Analysis
+      id: pmd
+      run: |
+        echo "::set-output name=badge_label::$(./scripts/badges/pmd_badge_label.sh)"
+    - name: Get Health Check
+      id: healthcheck
+      run: |
+        echo "::set-output name=badge_label::$(./scripts/badges/healthcheck_badge_label.sh)"
+    - name: Test Results - create badge
+      uses: schneegans/dynamic-badges-action@v1.0.0
+      with:
+        auth: $AUTH
+        gistID: $GISTID
+        filename: ${{ steps.filename.outputs.prefix }}_testresults_badge.json
+        label: Apex Tests
+        message: "${{ steps.testresults.outputs.badge_label }}"
+        namedLogo: salesforce
+        color: blue
+    - name: Code Coverage - create badge
+      uses: schneegans/dynamic-badges-action@v1.0.0
+      with:
+        auth: $AUTH
+        gistID: $GISTID
+        filename: ${{ steps.filename.outputs.prefix }}_codecoverage_badge.json
+        label: Apex Code Coverage
+        message: "${{ steps.codecoverage.outputs.badge_label }}"
+        namedLogo: salesforce
+        color: orange
+    - name: PMD Analysis - create badge
+      uses: schneegans/dynamic-badges-action@v1.0.0
+      with:
+        auth: $AUTH
+        gistID: $GISTID
+        filename: ${{ steps.filename.outputs.prefix }}_pmd_badge.json
+        label: PMD Analysis
+        message: "${{ steps.pmd.outputs.badge_label }}"
+        namedLogo: salesforce
+        color: green
+    - name: Health Check - create badge
+      uses: schneegans/dynamic-badges-action@v1.0.0
+      with:
+        auth: $AUTH
+        gistID: $GISTID
+        filename: ${{ steps.filename.outputs.prefix }}_healthcheck_badge.json
+        label: Health Check
+        message: "${{ steps.healthcheck.outputs.badge_label }}"
+        namedLogo: salesforce
+        color: darkblue
+

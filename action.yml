@@ -23,7 +23,7 @@ runs:
     - name: Debug show job inputs
       shell: bash
       run: |
-      which bash
+        which bash
         ./scripts/badges/testresults_badge_label.sh
         bash ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/testresults.json
 

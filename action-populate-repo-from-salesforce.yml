@@ -16,6 +16,9 @@ inputs:
   salesforce_password:
     description: Salesforce org admin password, concatenated with security token
     required: false
+  folder_to_commit:
+    description: Which folder should we commit to Git, default being .
+    required: true
 
 runs:
   using: "composite"
@@ -43,5 +46,5 @@ runs:
       - name: Update container version of git, and commit results to Git
         run: |
           apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
-          git add .
+          git add ${{ inputs.folder_to_commit }}
           git commit -m "Updated from Salesforce" || true

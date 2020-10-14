@@ -1,78 +1,54 @@
 name: Populate Github repository from Salesforce org
 
-# Use only on read-only branches, populated from Salesforce orgs (prod, sandboxes)
-# This reads the metadata listed in manifest/package.xml
-#
-# Trigger this manually by API; this works
-#   gh api -X POST -f 'event_type=populate_from_salesforce' /repos/:owner/:repo/dispatches
-# Example :
-#   gh api -X POST -f 'event_type=populate_from_salesforce' /repos/AltiusRupert/rbarrow-dev-ed/dispatches
+# Salesforce login parameters.
+# Login with :
+# - either salesforce_url, salesforce_username, salesforce_password
+# - or with salesforce_accesstoken
+# - or with salesforce_authurl
 
-on:
-  repository_dispatch:
-    types: [populate_from_salesforce]
-  
-jobs:    
-  onpopulate:
+inputs:
+  salesforce_url:
+    description: Salesforce org url (best with mydomain.my.salesforce.com, mydomain-dev-ed.my.salesforce ou mydomain--mysandbvox.my.salesforce.com
+    required: false
+  salesforce_username:
+    description: Salesforce org admin username
+    required: false
+  salesforce_password:
+    description: Salesforce org admin password, concatenated with security token
+    required: false
+
+runs:
+  using: "composite"
     runs-on: ubuntu-latest
     name: Retrieve code and check into repository
     container: salesforce/salesforcedx:7.75.1-full
-    steps:
-      
-      #########################################################################################################
-      # Get GIT installed correctly, and checkout the repo
-  
-      - name: "Update container version of git"
-        run: |
-          apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
-      
-      - name: "Checkout code"
-        uses: actions/checkout@v2
-        with:
-          persist-credentials: false  # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
-          fetch-depth: 0              # otherwise, you will failed to push refs to dest repo
-
-      - name: "Configure Git"
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-        
+    steps:        
         
       #########################################################################################################
       # Get SFDX installed correctly, and authenticated
 
-      - name: "Add SFDX Powerkit Plugin"
+      - name: Add SFDX Powerkit Plugin for login with username and password
+        if: inputs.salesforce_password != ''
+        shell: bash
         run: |
           echo 'y' | sfdx plugins:install sfpowerkit
-      - name: Authenticate with SFDX using username and password, and set as default for additional sdfx commands
+
+      - name: Authenticate with SFDX using username and password, including security token
+        if: inputs.salesforce_password != ''
+        shell: bash
         run: |
           sfdx sfpowerkit:auth:login -r ${{ secrets.SALESFORCE_URL }} -u ${{ secrets.SALESFORCE_USERNAME }} -p ${{ secrets.SALESFORCE_PASSWORD }} -a checkout
-        
-      - name: Set Default SFDX target org
-        run: sfdx force:config:set defaultusername=checkout
-        
+          sfdx force:config:set defaultusername=checkout        
+
 
       #########################################################################################################
       # Get latest Salesforce metadata
 
       - name: Retrieve source from Salesforce organization
+        shell: bash
         run: |
           sfdx force:source:retrieve -x ./manifest/package.xml
           cd ./force-app/main/default/staticresources
           find . -name .git -type d -exec rm -rf {} \; || true
           cd ../../../../
           
-      #########################################################################################################
-      # Commit to Git and sync to Github
-
-      - name: Commit test results
-        run: | 
-         git add .
-         git commit -m "Updated from Salesforce" || true
-
-      - name: Push to Github
-        uses: ad-m/github-push-action@master
-        with:
-         github_token: ${{ secrets.GITHUB_TOKEN }}
-         directory: .
-         force: true

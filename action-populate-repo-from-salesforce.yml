@@ -24,31 +24,24 @@ runs:
     container: salesforce/salesforcedx:7.75.1-full
     steps:        
         
-      #########################################################################################################
-      # Get SFDX installed correctly, and authenticated
-
-      - name: Add SFDX Powerkit Plugin for login with username and password
+      - name: Add SFDX Powerkit Plugin for login with username and password, including security token
         if: inputs.salesforce_password != ''
         shell: bash
         run: |
           echo 'y' | sfdx plugins:install sfpowerkit
-
-      - name: Authenticate with SFDX using username and password, including security token
-        if: inputs.salesforce_password != ''
-        shell: bash
-        run: |
-          sfdx sfpowerkit:auth:login -r ${{ secrets.SALESFORCE_URL }} -u ${{ secrets.SALESFORCE_USERNAME }} -p ${{ secrets.SALESFORCE_PASSWORD }} -a checkout
-          sfdx force:config:set defaultusername=checkout        
-
-
-      #########################################################################################################
-      # Get latest Salesforce metadata
+          sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
 
       - name: Retrieve source from Salesforce organization
         shell: bash
         run: |
+          sfdx force:config:set defaultusername=checkout        
           sfdx force:source:retrieve -x ./manifest/package.xml
           cd ./force-app/main/default/staticresources
           find . -name .git -type d -exec rm -rf {} \; || true
           cd ../../../../
-          
+
+      - name: Update container version of git, and commit results to Git
+        run: |
+          apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
+          git add .
+          git commit -m "Updated from Salesforce" || true

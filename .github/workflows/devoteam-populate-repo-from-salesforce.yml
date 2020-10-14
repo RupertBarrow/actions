@@ -1,0 +1,43 @@
+name: Populate Github repository from Salesforce org
+
+# Use only on read-only branches, populated from Salesforce orgs (prod, sandboxes)
+# This reads the metadata listed in manifest/package.xml
+#
+# Trigger this manually by API; this works
+#   gh api -X POST -f 'event_type=populate_from_salesforcev2' /repos/:owner/:repo/dispatches
+# Example :
+#   gh api -X POST -f 'event_type=populate_from_salesforcev2' /repos/AltiusRupert/rbarrow-dev-ed/dispatches
+
+on:
+  repository_dispatch:
+    types: [populate_from_salesforcev2]
+  
+jobs:    
+  onpopulate:
+    runs-on: ubuntu-latest
+    name: Retrieve code and check into repository
+    container: salesforce/salesforcedx:7.75.1-full
+    env:
+      folder-to-commit: .
+    steps:
+      
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false  # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0              # otherwise, you will failed to push refs to dest repo
+      
+      - name: Populate git with metadata from Salesforce org
+        uses: AltiusRupert/actions/action-populate-repo-from-salesforce@main
+        with:
+          salesforce_url:      ${{ secrets.SALESFORCE_URL }}
+          salesforce_username: ${{ secrets.SALESFORCE_USERNAME }}
+          salesforce_password: ${{ secrets.SALESFORCE_PASSWORD }}
+          folder_to_commit:    ${{ env.folder-to-commit }}
+          
+      - name: Push to Github
+        uses: ad-m/github-push-action@master
+        with:
+         github_token: ${{ secrets.GITHUB_TOKEN }}
+         directory: ${{ env.folder-to-commit }}
+         force: true

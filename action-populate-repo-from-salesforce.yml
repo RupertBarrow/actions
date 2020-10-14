@@ -1,0 +1,78 @@
+name: Populate Github repository from Salesforce org
+
+# Use only on read-only branches, populated from Salesforce orgs (prod, sandboxes)
+# This reads the metadata listed in manifest/package.xml
+#
+# Trigger this manually by API; this works
+#   gh api -X POST -f 'event_type=populate_from_salesforce' /repos/:owner/:repo/dispatches
+# Example :
+#   gh api -X POST -f 'event_type=populate_from_salesforce' /repos/AltiusRupert/rbarrow-dev-ed/dispatches
+
+on:
+  repository_dispatch:
+    types: [populate_from_salesforce]
+  
+jobs:    
+  onpopulate:
+    runs-on: ubuntu-latest
+    name: Retrieve code and check into repository
+    container: salesforce/salesforcedx:7.75.1-full
+    steps:
+      
+      #########################################################################################################
+      # Get GIT installed correctly, and checkout the repo
+  
+      - name: "Update container version of git"
+        run: |
+          apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
+      
+      - name: "Checkout code"
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false  # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0              # otherwise, you will failed to push refs to dest repo
+
+      - name: "Configure Git"
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+        
+        
+      #########################################################################################################
+      # Get SFDX installed correctly, and authenticated
+
+      - name: "Add SFDX Powerkit Plugin"
+        run: |
+          echo 'y' | sfdx plugins:install sfpowerkit
+      - name: Authenticate with SFDX using username and password, and set as default for additional sdfx commands
+        run: |
+          sfdx sfpowerkit:auth:login -r ${{ secrets.SALESFORCE_URL }} -u ${{ secrets.SALESFORCE_USERNAME }} -p ${{ secrets.SALESFORCE_PASSWORD }} -a checkout
+        
+      - name: Set Default SFDX target org
+        run: sfdx force:config:set defaultusername=checkout
+        
+
+      #########################################################################################################
+      # Get latest Salesforce metadata
+
+      - name: Retrieve source from Salesforce organization
+        run: |
+          sfdx force:source:retrieve -x ./manifest/package.xml
+          cd ./force-app/main/default/staticresources
+          find . -name .git -type d -exec rm -rf {} \; || true
+          cd ../../../../
+          
+      #########################################################################################################
+      # Commit to Git and sync to Github
+
+      - name: Commit test results
+        run: | 
+         git add .
+         git commit -m "Updated from Salesforce" || true
+
+      - name: Push to Github
+        uses: ad-m/github-push-action@master
+        with:
+         github_token: ${{ secrets.GITHUB_TOKEN }}
+         directory: .
+         force: true

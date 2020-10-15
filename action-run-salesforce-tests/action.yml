@@ -26,20 +26,24 @@ inputs:
 runs:
   using: "composite"
   steps:        
-        
-      - run: mkdir -p ./reports
-      - run: echo 'y' | sfdx plugins:install sfpowerkit
+      
+      - shell: bash
+        run: |
+          mkdir -p ./reports
+          echo 'y' | sfdx plugins:install sfpowerkit
 
 
       #########################################################################################################
       # Run tests, code coverage, PMD analysis and health check
 
       - name: Run Apex PMD Static (Code Analyzer)
+        shell: bash
         run: |
           touch ./reports/pmd.json
           sfdx sfpowerkit:source:pmd -d ./force-app/main/default -r category/apex/design.xml -f json -o ./reports/pmd.json || true
 
       - name: Run Code Coverage
+        shell: bash
         run: |
           touch ./reports/codecoverage.json
           touch ./reports/codecoverage.txt
@@ -47,6 +51,7 @@ runs:
           sfdx force:apex:test:run -c -u checkout -r human > ./reports/codecoverage.txt  || true
 
       - name: Run Health Check
+        shell: bash
         run: |
           touch ./reports/healthcheck.json
           . $( sfdx sfpowerkit:org:healthcheck --json > ./reports/healthcheck.json ) || true
@@ -58,6 +63,7 @@ runs:
       # These badges are displayed in the REAM file of this repo
 
       - name: Commit test results
+        shell: bash
         run: |
           git add ./reports/pmd.json
           git add ./reports/codecoverage.json

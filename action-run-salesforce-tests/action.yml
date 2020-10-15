@@ -30,15 +30,15 @@ runs:
       shell: bash
       run: |
         touch ./reports/pmd.json
-        sfdx sfpowerkit:source:pmd -d ./force-app/main/default -r category/apex/design.xml -f json -o ./reports/pmd.json || true
+#        sfdx sfpowerkit:source:pmd -d ./force-app/main/default -r category/apex/design.xml -f json -o ./reports/pmd.json || true
 
     - name: Run Code Coverage
       shell: bash
       run: |
         touch ./reports/codecoverage.json
         touch ./reports/codecoverage.txt
-#        sfdx force:apex:test:run -c -u checkout -r json  > ./reports/codecoverage.json || true
-#        sfdx force:apex:test:run -c -u checkout -r human > ./reports/codecoverage.txt  || true
+        sfdx force:apex:test:run -c -u checkout -r json  > ./reports/codecoverage.json || true
+        sfdx force:apex:test:run -c -u checkout -r human > ./reports/codecoverage.txt  || true
 
     - name: Run Health Check
       shell: bash

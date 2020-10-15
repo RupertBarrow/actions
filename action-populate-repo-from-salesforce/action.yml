@@ -57,12 +57,12 @@ runs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
-      - name: git add
+      - name: git add ?
         if: ${{ inputs.do_git_add }}
         shell: bash
         run: git add ${{ inputs.folder_to_commit }}
 
-      - name: git add
+      - name: git commit ?
         if: ${{ inputs.do_git_commit }}
         shell: bash
         run: git commit -m "Updated from Salesforce" || true

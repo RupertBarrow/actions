@@ -14,8 +14,11 @@ runs:
   using: "composite"
   steps:        
       
-    - run: git config --local user.email "action@github.com"
-    - run: git config --local user.name  "GitHub Action"
+    - name: Configure git
+      shell: bash
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name  "GitHub Action"
 
     - name: Log in to Salesforce org
       shell: bash

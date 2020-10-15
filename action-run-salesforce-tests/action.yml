@@ -1,1 +1,66 @@
+name: Run Salesforce tests and save results
 
+inputs:
+  salesforce_url:
+    description: Salesforce org url (best with mydomain.my.salesforce.com, mydomain-dev-ed.my.salesforce ou mydomain--mysandbvox.my.salesforce.com
+    required: false
+  salesforce_username:
+    description: Salesforce org admin username
+    required: false
+  salesforce_password:
+    description: Salesforce org admin password, concatenated with security token
+    required: false
+  folder_to_commit:
+    description: Which folder should we commit to Git, default being .
+    default: .
+    required: false
+  do_git_add:
+    description: Do you want to git add ?
+    default: false
+    required: false
+  do_git_commit:
+    description: Do you want to git commit ?
+    default: false
+    required: false
+
+runs:
+  using: "composite"
+  steps:        
+        
+      - run: mkdir -p ./reports
+      - run: echo 'y' | sfdx plugins:install sfpowerkit
+
+
+      #########################################################################################################
+      # Run tests, code coverage, PMD analysis and health check
+
+      - name: Run Apex PMD Static (Code Analyzer)
+        run: |
+          touch ./reports/pmd.json
+          sfdx sfpowerkit:source:pmd -d ./force-app/main/default -r category/apex/design.xml -f json -o ./reports/pmd.json || true
+
+      - name: Run Code Coverage
+        run: |
+          touch ./reports/codecoverage.json
+          touch ./reports/codecoverage.txt
+          sfdx force:apex:test:run -c -u checkout -r json  > ./reports/codecoverage.json || true
+          sfdx force:apex:test:run -c -u checkout -r human > ./reports/codecoverage.txt  || true
+
+      - name: Run Health Check
+        run: |
+          touch ./reports/healthcheck.json
+          . $( sfdx sfpowerkit:org:healthcheck --json > ./reports/healthcheck.json ) || true
+
+
+      #########################################################################################################
+      # Commit test reports to Git and sync back to Github.
+      # Following this, the create-test-badges-v2.yml action will run to generate the badge labels
+      # These badges are displayed in the REAM file of this repo
+
+      - name: Commit test results
+        run: |
+          git add ./reports/pmd.json
+          git add ./reports/codecoverage.json
+          git add ./reports/codecoverage.txt
+          git add ./reports/healthcheck.json
+          git commit -m "Auto-generated test, code coverage, PMD and health check reports" || true

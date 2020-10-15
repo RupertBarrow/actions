@@ -20,6 +20,7 @@ runs:
         mkdir -p ./reports
         echo 'y' | sfdx plugins:install sfpowerkit
         sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
+        sfdx force:config:set defaultusername=checkout        
 
 
     #########################################################################################################
@@ -29,9 +30,7 @@ runs:
       shell: bash
       run: |
         touch ./reports/pmd.json
-        pwd; ls -al
         sfdx sfpowerkit:source:pmd -d ./force-app/main/default -r category/apex/design.xml -f json -o ./reports/pmd.json || true
-        sfdx force:config:set defaultusername=checkout        
 
     - name: Run Code Coverage
       shell: bash

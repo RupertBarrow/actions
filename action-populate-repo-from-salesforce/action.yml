@@ -49,20 +49,20 @@ runs:
         find . -name .git -type d -exec rm -rf {} \; || true
         cd ../../../../
 
-    - name: Update container version of git, and commit results to Git
+#    - name: Update container version of git, and commit results to Git
 #      if: inputs.do_git_add || inputs.do_git_commit
-      shell: bash
-      run: |
-        apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+#      shell: bash
+#      run: |
+#        apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
+#        git config --local user.email "action@github.com"
+#        git config --local user.name "GitHub Action"
 
     - name: git add ?
-#      if: inputs.do_git_add
+      if: inputs.do_git_add
       shell: bash
       run: git add ${{ inputs.folder_to_commit }}
 
     - name: git commit ?
-#      if: inputs.do_git_commit
+      if: inputs.do_git_commit
       shell: bash
       run: git commit -m "Updated from Salesforce" || true

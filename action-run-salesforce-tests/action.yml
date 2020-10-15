@@ -22,6 +22,8 @@ runs:
         sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
         sfdx force:config:set defaultusername=checkout        
 
+        sfdx force:source:retrieve -x ./manifest/package.xml
+
 
     #########################################################################################################
     # Run tests, code coverage, PMD analysis and health check

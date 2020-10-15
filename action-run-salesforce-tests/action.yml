@@ -18,7 +18,7 @@ runs:
         run: |
           touch ./reports/pmd.json
           pwd; ls -al
-          sfdx sfpowerkit:source:pmd -d ./force-app/main/default -r category/apex/design.xml -f json -o ./reports/pmd.json || true
+#          sfdx sfpowerkit:source:pmd -d ./force-app/main/default -r category/apex/design.xml -f json -o ./reports/pmd.json || true
 
       - name: Run Code Coverage
         shell: bash

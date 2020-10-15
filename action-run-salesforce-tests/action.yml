@@ -45,7 +45,7 @@ runs:
       run: |
         touch ./reports/healthcheck.json
         pwd; ls -al
-        . $( sfdx sfpowerkit:org:healthcheck --json > ./reports/healthcheck.json ) || true
+#        . $( sfdx sfpowerkit:org:healthcheck --json > ./reports/healthcheck.json ) || true
 
 
     #########################################################################################################

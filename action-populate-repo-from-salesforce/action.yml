@@ -39,11 +39,11 @@ runs:
       run: |
         echo 'y' | sfdx plugins:install sfpowerkit
         sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
+        sfdx force:config:set defaultusername=checkout        
 
     - name: Retrieve source from Salesforce organization
       shell: bash
       run: |
-        sfdx force:config:set defaultusername=checkout        
         sfdx force:source:retrieve -x ./manifest/package.xml
         cd ./force-app/main/default/staticresources
         find . -name .git -type d -exec rm -rf {} \; || true

@@ -34,7 +34,7 @@ runs:
   steps:        
         
     - name: Add SFDX Powerkit Plugin for login with username and password, including security token
-      if: inputs.salesforce_password != ''
+#      if: inputs.salesforce_password != ''
       shell: bash
       run: |
         echo 'y' | sfdx plugins:install sfpowerkit
@@ -50,7 +50,7 @@ runs:
         cd ../../../../
 
     - name: Update container version of git, and commit results to Git
-      if: inputs.do_git_add || inputs.do_git_commit
+#      if: inputs.do_git_add || inputs.do_git_commit
       shell: bash
       run: |
         apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
@@ -58,11 +58,11 @@ runs:
         git config --local user.name "GitHub Action"
 
     - name: git add ?
-      if: inputs.do_git_add
+#      if: inputs.do_git_add
       shell: bash
       run: git add ${{ inputs.folder_to_commit }}
 
     - name: git commit ?
-      if: inputs.do_git_commit
+#      if: inputs.do_git_commit
       shell: bash
       run: git commit -m "Updated from Salesforce" || true

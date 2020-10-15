@@ -38,8 +38,8 @@ runs:
         touch ./reports/codecoverage.json
         touch ./reports/codecoverage.txt
         pwd; ls -al
-       . $( sfdx force:apex:test:run -c -u checkout -r json  > ./reports/codecoverage.json ) || true
-       . $( sfdx force:apex:test:run -c -u checkout -r human > ./reports/codecoverage.txt  ) || true
+        . $( sfdx force:apex:test:run -c -u checkout -r json  > ./reports/codecoverage.json ) || true
+        . $( sfdx force:apex:test:run -c -u checkout -r human > ./reports/codecoverage.txt  ) || true
 
     - name: Run Health Check
       shell: bash

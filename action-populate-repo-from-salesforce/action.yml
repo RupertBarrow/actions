@@ -31,8 +31,6 @@ inputs:
 
 runs:
   using: "composite"
-    runs-on: ubuntu-latest
-    container: salesforce/salesforcedx:7.75.1-full
     steps:        
         
       - name: Add SFDX Powerkit Plugin for login with username and password, including security token

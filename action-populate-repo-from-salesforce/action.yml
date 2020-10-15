@@ -58,11 +58,9 @@ runs:
 #        git config --local user.name "GitHub Action"
 
     - name: git add ?
-      if: inputs.do_git_add
       shell: bash
-      run: git add ${{ inputs.folder_to_commit }}
+      run: ( ${{ inputs.do_git_add }} && git add ${{ inputs.folder_to_commit }} )  || true
 
     - name: git commit ?
-      if: inputs.do_git_commit
       shell: bash
-      run: git commit -m "Updated from Salesforce" || true
+      run: ( ${{ inputs.do_git_commit }} && git commit -m "Updated from Salesforce" )  || true

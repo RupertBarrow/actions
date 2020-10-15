@@ -31,38 +31,38 @@ inputs:
 
 runs:
   using: "composite"
-    steps:        
+  steps:        
         
-      - name: Add SFDX Powerkit Plugin for login with username and password, including security token
-        if: inputs.salesforce_password != ''
-        shell: bash
-        run: |
-          echo 'y' | sfdx plugins:install sfpowerkit
-          sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
+    - name: Add SFDX Powerkit Plugin for login with username and password, including security token
+      if: inputs.salesforce_password != ''
+      shell: bash
+      run: |
+        echo 'y' | sfdx plugins:install sfpowerkit
+        sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
 
-      - name: Retrieve source from Salesforce organization
-        shell: bash
-        run: |
-          sfdx force:config:set defaultusername=checkout        
-          sfdx force:source:retrieve -x ./manifest/package.xml
-          cd ./force-app/main/default/staticresources
-          find . -name .git -type d -exec rm -rf {} \; || true
-          cd ../../../../
+    - name: Retrieve source from Salesforce organization
+      shell: bash
+      run: |
+        sfdx force:config:set defaultusername=checkout        
+        sfdx force:source:retrieve -x ./manifest/package.xml
+        cd ./force-app/main/default/staticresources
+        find . -name .git -type d -exec rm -rf {} \; || true
+        cd ../../../../
 
-      - name: Update container version of git, and commit results to Git
-        if: ${{ inputs.do_git_add }} || ${{ inputs.do_git_commit }}
-        shell: bash
-        run: |
-          apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+    - name: Update container version of git, and commit results to Git
+      if: ${{ inputs.do_git_add }} || ${{ inputs.do_git_commit }}
+      shell: bash
+      run: |
+        apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
 
-      - name: git add ?
-        if: ${{ inputs.do_git_add }}
-        shell: bash
-        run: git add ${{ inputs.folder_to_commit }}
+    - name: git add ?
+      if: ${{ inputs.do_git_add }}
+      shell: bash
+      run: git add ${{ inputs.folder_to_commit }}
 
-      - name: git commit ?
-        if: ${{ inputs.do_git_commit }}
-        shell: bash
-        run: git commit -m "Updated from Salesforce" || true
+    - name: git commit ?
+      if: ${{ inputs.do_git_commit }}
+      shell: bash
+      run: git commit -m "Updated from Salesforce" || true

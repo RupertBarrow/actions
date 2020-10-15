@@ -44,7 +44,6 @@ runs:
       shell: bash
       run: |
         touch ./reports/healthcheck.json
-        pwd; ls -al
 #        . $( sfdx sfpowerkit:org:healthcheck --json > ./reports/healthcheck.json ) || true
 
 
@@ -56,7 +55,9 @@ runs:
     - name: Commit test results
       shell: bash
       run: |
+        pwd
         git add ./reports/pmd.json
+        ls -al
         git add ./reports/codecoverage.json
         git add ./reports/codecoverage.txt
         git add ./reports/healthcheck.json

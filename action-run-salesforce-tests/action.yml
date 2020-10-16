@@ -20,30 +20,26 @@ inputs:
 
 runs:
   using: "composite"
+  env:
+    SCRIPTS_PATH: "/__w/_actions/AltiusRupert/actions/main/action-run-salesforce-tests"
   steps:        
       
     - name: Get last version of git
       id: getgit
       shell: bash
       run: |
-        echo "starting git update ..."
         apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
-        echo "... done"
+
+    - name: Dump github context
+      shell: bash
+      env:
+       GITHUB_CONTEXT: ${{ toJson(github) }}
+      run:   echo "$GITHUB_CONTEXT"
 
     - name: Run tests
       id: runtests
       shell: bash
       run: |
-        echo "calling run-salesforce-tests ..."
-        pwd
-        find / -name run-salesforce-tests.sh -print
-        
-        ls -al
-        echo "##### GITHUB_WORKSPACE : "$GITHUB_WORKSPACE"#####"
-        ls -al $GITHUB_WORKSPACE
-        echo "##### HOME : "$HOME"#####"
-        ls -al $HOME
-        bash ${{ inputs.github_action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
-        echo "... done"
+        bash $SCRIPTS_PATH/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
 #        $( echo ${{ github.action_path }}; ls -al ${{ github.action_path }} )
 #        $( bash ${{ github.action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} )

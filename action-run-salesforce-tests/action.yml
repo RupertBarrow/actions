@@ -10,9 +10,6 @@ inputs:
   salesforce_password:
     description: Salesforce org admin password, concatenated with security token
     required: false
-  github_action_path:
-    description: github action_path
-    required: false
 
 runs:
   using: "composite"
@@ -27,5 +24,7 @@ runs:
     - name: Run tests
       id: runtests
       shell: bash
+      env:
+        ACTION_PATH: "/__w/_actions/AltiusRupert/actions/main/action-run-salesforce-tests"
       run: |
-        bash ${{ inputs.github_action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
+        bash $ACTION_PATH/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}

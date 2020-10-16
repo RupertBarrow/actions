@@ -37,8 +37,10 @@ runs:
         echo "calling run-salesforce-tests ..."
         pwd
         ls -al
-        echo "#####"$GITHUB_WORKSPACE"#####"
+        echo "##### GITHUB_WORKSPACE : "$GITHUB_WORKSPACE"#####"
         ls -al $GITHUB_WORKSPACE
+        echo "##### HOME : "$HOME"#####"
+        ls -al $HOME
         bash ${{ inputs.github_action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
         echo "... done"
 #        $( echo ${{ github.action_path }}; ls -al ${{ github.action_path }} )

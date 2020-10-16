@@ -18,5 +18,6 @@ runs:
       id: runtests
       shell: bash
       run: |
-        $( echo ${{ github.action_path }}; ls -al ${{ github.action_path }} )
-        $( bash ${{ github.action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} )
+        echo "::set-output name=res::$( bash ${{ github.action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} )"
+#        $( echo ${{ github.action_path }}; ls -al ${{ github.action_path }} )
+#        $( bash ${{ github.action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} )

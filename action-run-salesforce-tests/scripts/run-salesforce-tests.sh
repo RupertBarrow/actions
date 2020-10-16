@@ -3,6 +3,9 @@
 
 echo "in run-salesforce-tests.sh ..."
 which sfdx
+pwd
+ls -al ./reports
+ls -al
 
 
 # Install SFpowerkit plugin, and log in

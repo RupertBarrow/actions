@@ -14,10 +14,6 @@ inputs:
     description: github action_path
     required: false
 
-#outputs:
-#  res:
-#    value: "${{ steps.runtests.outputs.res }}"
-
 runs:
   using: "composite"
   steps:        
@@ -28,21 +24,8 @@ runs:
       run: |
         apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
 
-    - run: |
-        echo "${{ github.action_path }}"
-        ls -al ${{ github.action_path }}
-      shell: bash
-
-    - name: Dump github context
-      shell: bash
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
-      run: echo "$GITHUB_CONTEXT"
-
     - name: Run tests
       id: runtests
       shell: bash
-      env:
-        ACTION_PATH: "/__w/_actions/AltiusRupert/actions/main/action-run-salesforce-tests"
       run: |
-        bash $ACTION_PATH/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
+        bash ${{ inputs.github_action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}

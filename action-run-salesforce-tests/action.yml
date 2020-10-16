@@ -36,6 +36,8 @@ runs:
       run: |
         echo "calling run-salesforce-tests ..."
         pwd
+        find / -name run-salesforce-tests.sh -print
+        
         ls -al
         echo "##### GITHUB_WORKSPACE : "$GITHUB_WORKSPACE"#####"
         ls -al $GITHUB_WORKSPACE

@@ -1,6 +1,10 @@
 #!/bin/bash
 
 
+echo "in run-salesforce-tests.sh ..."
+which sfdx
+
+
 # Install SFpowerkit plugin, and log in
 echo 'y' | sfdx plugins:install sfpowerkit
 sfdx sfpowerkit:auth:login -a checkout $*

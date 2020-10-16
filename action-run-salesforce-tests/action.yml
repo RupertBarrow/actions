@@ -11,7 +11,7 @@ inputs:
     description: Salesforce org admin password, concatenated with security token
     required: false
   github_action_path:
-    description: ${{ github.action_path }}
+    description: github action_path
     required: false
 
 outputs:

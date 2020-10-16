@@ -1,13 +1,5 @@
 #!/bin/bash
 
-
-echo "in run-salesforce-tests.sh ..."
-which sfdx
-pwd
-ls -al ./reports
-ls -al
-
-
 # Install SFpowerkit plugin, and log in
 echo 'y' | sfdx plugins:install sfpowerkit
 sfdx sfpowerkit:auth:login -a checkout $*
@@ -45,7 +37,6 @@ pwd
 git config --local user.email "action@github.com"
 git config --local user.name  "GitHub Action"
 git add ./reports/pmd.json
-ls -al
 git add ./reports/codecoverage.json
 git add ./reports/codecoverage.txt
 git add ./reports/healthcheck.json

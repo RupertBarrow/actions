@@ -10,6 +10,10 @@ inputs:
   salesforce_password:
     description: Salesforce org admin password, concatenated with security token
 
+outputs:
+  res:
+    value: "${{ steps.runtests.outputs.res }}"
+
 runs:
   using: "composite"
   steps:        

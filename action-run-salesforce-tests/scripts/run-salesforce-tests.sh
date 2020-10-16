@@ -14,11 +14,11 @@ sfdx sfpowerkit:auth:login -a checkout $*
 sfdx force:config:set defaultusername=checkout        
 
 # Retrieve metadata from Salesforce org
-sfdx force:source:retrieve -x ./manifest/package.xml
-cd ./force-app/main/default/staticresources
-find . -name .git -type d -exec rm -rf {} \; || true
-cd ../../../../
-mkdir -p ./reports
+#sfdx force:source:retrieve -x ./manifest/package.xml
+#cd ./force-app/main/default/staticresources
+#find . -name .git -type d -exec rm -rf {} \; || true
+#cd ../../../../
+#mkdir -p ./reports
 
 
 # Run Apex PMD Static (Code Analyzer)

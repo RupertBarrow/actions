@@ -35,7 +35,10 @@ runs:
       shell: bash
       run: |
         echo "calling run-salesforce-tests ..."
+        pwd
         echo "###"${{ inputs.github_action_path }}"###"
+        ls -al ./.github
+        ls -al
         bash ${{ inputs.github_action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
         echo "... done"
 #        $( echo ${{ github.action_path }}; ls -al ${{ github.action_path }} )

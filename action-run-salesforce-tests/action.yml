@@ -1,0 +1,19 @@
+name: Run Salesforce tests and save results
+
+inputs:
+  salesforce_url:
+    description: Salesforce org url (best with mydomain.my.salesforce.com, mydomain-dev-ed.my.salesforce ou mydomain--mysandbvox.my.salesforce.com
+    required: false
+  salesforce_username:
+    description: Salesforce org admin username
+    required: false
+  salesforce_password:
+    description: Salesforce org admin password, concatenated with security token
+
+runs:
+  using: "composite"
+  steps:        
+      
+    - name: Run tests
+      shell: bash
+      run: bash ./scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}

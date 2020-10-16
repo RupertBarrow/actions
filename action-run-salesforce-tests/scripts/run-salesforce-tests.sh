@@ -1,9 +1,7 @@
 #!/bin/bash
 
-git config --local user.email "action@github.com"
-git config --local user.name  "GitHub Action"
 
-# Insrall SFpowerkit plugin, and log in
+# Install SFpowerkit plugin, and log in
 echo 'y' | sfdx plugins:install sfpowerkit
 sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
 sfdx force:config:set defaultusername=checkout        
@@ -37,6 +35,8 @@ touch ./reports/healthcheck.json
 # These badges are displayed in the REAM file of this repo
 
 pwd
+git config --local user.email "action@github.com"
+git config --local user.name  "GitHub Action"
 git add ./reports/pmd.json
 ls -al
 git add ./reports/codecoverage.json

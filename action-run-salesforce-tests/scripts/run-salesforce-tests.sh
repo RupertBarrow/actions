@@ -3,7 +3,7 @@
 
 # Install SFpowerkit plugin, and log in
 echo 'y' | sfdx plugins:install sfpowerkit
-sfdx sfpowerkit:auth:login -r ${SALESFORCE_URL} -u ${SALESFORCE_USERNAME} -p ${SALESFORCE_PASSWORD} -a checkout
+sfdx sfpowerkit:auth:login -a checkout $*
 sfdx force:config:set defaultusername=checkout        
 
 # Retrieve metadata from Salesforce org

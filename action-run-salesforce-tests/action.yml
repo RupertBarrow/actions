@@ -16,4 +16,7 @@ runs:
       
     - name: Run tests
       shell: bash
-      run: bash ${{ github.action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
+      run: |
+        pwd
+        ls -al
+        bash ${{ github.action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}

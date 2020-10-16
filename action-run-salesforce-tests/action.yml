@@ -20,8 +20,6 @@ inputs:
 
 runs:
   using: "composite"
-  env:
-    SCRIPTS_PATH: "/__w/_actions/AltiusRupert/actions/main/action-run-salesforce-tests"
   steps:        
       
     - name: Get last version of git
@@ -33,12 +31,14 @@ runs:
     - name: Dump github context
       shell: bash
       env:
-       GITHUB_CONTEXT: ${{ toJson(github) }}
-      run:   echo "$GITHUB_CONTEXT"
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: echo "$GITHUB_CONTEXT"
 
     - name: Run tests
       id: runtests
       shell: bash
+      env:
+        SCRIPTS_PATH: "/__w/_actions/AltiusRupert/actions/main/action-run-salesforce-tests"
       run: |
         bash $SCRIPTS_PATH/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
 #        $( echo ${{ github.action_path }}; ls -al ${{ github.action_path }} )

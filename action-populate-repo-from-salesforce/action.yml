@@ -52,12 +52,11 @@ runs:
         if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
 
     - name: Update container version of git, and commit results to Git
-      if: inputs.do_git_add || inputs.do_git_commit
       shell: bash
       run: |
-#        apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+#        ( (${{ inputs.do_git_add }} || ${{ inputs.do_git_commit }}) &&  apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git )
+        ( (${{ inputs.do_git_add }} || ${{ inputs.do_git_commit }}) &&  git config --local user.email "action@github.com" )
+        ( (${{ inputs.do_git_add }} || ${{ inputs.do_git_commit }}) &&  git config --local user.name "GitHub Action"      )
 
     - name: git add ?
       shell: bash

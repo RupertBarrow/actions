@@ -49,7 +49,7 @@ runs:
     - name: Clean up Salesforce static resources
       shell: bash
       run: |
-        if [-d ./force-app/main/default/staticresources]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
+        if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
 
 #    - name: Update container version of git, and commit results to Git
 #      if: inputs.do_git_add || inputs.do_git_commit

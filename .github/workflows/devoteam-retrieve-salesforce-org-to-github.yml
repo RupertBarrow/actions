@@ -1,0 +1,39 @@
+name: Retrieve Salesforce org to Github
+
+on:
+  push:
+    paths:
+      - .github/commands/command-retrieve-salesforce-org-to-github.txt
+  
+jobs:    
+  onretrieve:
+    runs-on: ubuntu-latest
+    name: Retrieve Salesforce org to Github
+    container: salesforce/salesforcedx:7.75.1-full
+    steps:
+      
+      - name: Update to latest version of git
+        run: apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
+
+      - name: Checkout from github
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Get Salesforce metadata from org
+        uses: AltiusRupert/actions/action-populate-repo-from-salesforce@main
+        with:
+         salesforce_url:      ${{ secrets.SALESFORCE_URL }}
+         salesforce_username: ${{ secrets.SALESFORCE_USERNAME }}
+         salesforce_password: ${{ secrets.SALESFORCE_PASSWORD }}
+         do_git_add: true
+         do_git_commit: true
+ 
+      - name: Push Salesforce metadata reports to repo
+        uses: ad-m/github-push-action@master
+        with:
+         github_token: ${{ secrets.GITHUB_TOKEN }}
+         directory: .
+         branch: sandbox_portailbp
+         force: true

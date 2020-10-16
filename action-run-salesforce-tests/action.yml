@@ -9,6 +9,10 @@ inputs:
     required: false
   salesforce_password:
     description: Salesforce org admin password, concatenated with security token
+    required: false
+  github_action_path:
+    description: ${{ github.action_path }}
+    required: false
 
 outputs:
   res:
@@ -28,6 +32,6 @@ runs:
       id: runtests
       shell: bash
       run: |
-        echo "::set-output name=res::$( bash ${{ github.action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} )"
+        echo "::set-output name=res::$( bash ${{ inputs.github_action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} )"
 #        $( echo ${{ github.action_path }}; ls -al ${{ github.action_path }} )
 #        $( bash ${{ github.action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} )

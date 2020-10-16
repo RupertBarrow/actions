@@ -34,7 +34,8 @@ runs:
       id: runtests
       shell: bash
       run: |
-        echo "calling run-salesforce-tests ..." 
+        echo "calling run-salesforce-tests ..."
+        echo "###"${{ inputs.github_action_path }}"###"
         bash ${{ inputs.github_action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
         echo "... done"
 #        $( echo ${{ github.action_path }}; ls -al ${{ github.action_path }} )

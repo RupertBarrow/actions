@@ -34,7 +34,6 @@ runs:
   steps:        
         
     - name: Add SFDX Powerkit Plugin for login with username and password, including security token
-#      if: inputs.salesforce_password != ''
       shell: bash
       run: |
         echo 'y' | sfdx plugins:install sfpowerkit
@@ -45,18 +44,14 @@ runs:
       shell: bash
       run: |
         sfdx force:source:retrieve -x ./manifest/package.xml
-
-    - name: Clean up Salesforce static resources
-      shell: bash
-      run: |
         if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
 
     - name: Update container version of git, and commit results to Git
       shell: bash
       run: |
-#        ( (${{ inputs.do_git_add }} || ${{ inputs.do_git_commit }}) &&  apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git )
-        ( (${{ inputs.do_git_add }} || ${{ inputs.do_git_commit }}) &&  git config --local user.email "action@github.com" )
-        ( (${{ inputs.do_git_add }} || ${{ inputs.do_git_commit }}) &&  git config --local user.name "GitHub Action"      )
+#        apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
 
     - name: git add ?
       shell: bash

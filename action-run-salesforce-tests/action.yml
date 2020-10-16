@@ -27,7 +27,7 @@ runs:
       shell: bash
       run: |
         echo "starting git update ..."
-        $( apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git )
+        apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
         echo "... done"
 
     - name: Run tests

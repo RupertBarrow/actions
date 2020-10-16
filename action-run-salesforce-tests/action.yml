@@ -43,4 +43,4 @@ runs:
       env:
         ACTION_PATH: "/__w/_actions/AltiusRupert/actions/main/action-run-salesforce-tests"
       run: |
-        bash $ACTION_PATH/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
+        bash ${{ github.action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}

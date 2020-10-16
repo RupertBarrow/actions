@@ -28,6 +28,8 @@ runs:
       run: |
         apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
 
+    - run: echo "${{ github.action_path }}"
+
     - name: Dump github context
       shell: bash
       env:

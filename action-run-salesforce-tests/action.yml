@@ -39,6 +39,8 @@ runs:
         echo "###"${{ inputs.github_action_path }}"###"
         ls -al ./.github
         ls -al
+        echo "#####"${{ env.GITHUB_WORKSPACE }}"#####"
+        ls -al ${{ env.GITHUB_WORKSPACE }}
         bash ${{ inputs.github_action_path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
         echo "... done"
 #        $( echo ${{ github.action_path }}; ls -al ${{ github.action_path }} )

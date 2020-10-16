@@ -18,6 +18,11 @@ runs:
   using: "composite"
   steps:        
       
+    - name: Get last version of git
+      id: getgit
+      shell: bash
+        run: apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
+
     - name: Run tests
       id: runtests
       shell: bash

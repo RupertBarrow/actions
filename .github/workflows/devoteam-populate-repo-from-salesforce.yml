@@ -4,13 +4,13 @@ name: Populate Github repository from Salesforce org
 # This reads the metadata listed in manifest/package.xml
 #
 # Trigger this manually by API; this works
-#   gh api -X POST -f 'event_type=populate_from_salesforcev2' /repos/:owner/:repo/dispatches
+#   gh api -X POST -f 'event_type=populate_from_salesforce' /repos/:owner/:repo/dispatches
 # Example :
-#   gh api -X POST -f 'event_type=populate_from_salesforcev2' /repos/AltiusRupert/rbarrow-dev-ed/dispatches
+#   gh api -X POST -f 'event_type=populate_from_salesforce' /repos/AltiusRupert/rbarrow-dev-ed/dispatches
 
 on:
   repository_dispatch:
-    types: [populate_from_salesforcev2]
+    types: [ populate_from_salesforce]
   
 jobs:    
   onpopulate:

@@ -10,8 +10,9 @@ sfdx force:config:set defaultusername=checkout
 #cd ./force-app/main/default/staticresources
 #find . -name .git -type d -exec rm -rf {} \; || true
 #cd ../../../../
-#mkdir -p ./reports
 
+
+mkdir -p ./reports
 
 # Run Apex PMD Static (Code Analyzer)
 touch ./reports/pmd.json

@@ -1,12 +1,12 @@
 name: Create Salesforce test badges
 
-inputs:
-  gistid:
-    description: ID of the Gist in which to publish results
-    required: true
-  gisttoken:
-    description: Auth token to update that Gist
-    required: true
+#inputs:
+#  gistid:
+#    description: ID of the Gist in which to publish results
+#    required: true
+#  gisttoken:
+#    description: Auth token to update that Gist
+#    required: true
 
 outputs:
   testresults_badge_label:

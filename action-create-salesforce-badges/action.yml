@@ -11,12 +11,20 @@ name: Create Salesforce test badges
 outputs:
   testresults_badge_label:
     value: "${{ steps.testresults.outputs.badge_label }}"
+  testresults_badge_color:
+    value: "${{ steps.testresults.outputs.badge_color }}"
   codecoverage_badge_label:
     value: "${{ steps.codecoverage.outputs.badge_label }}"
+  codecoverage_badge_color:
+    value: "${{ steps.codecoverage.outputs.badge_color }}"
   pmd_badge_label:
     value: "${{ steps.pmd.outputs.badge_label }}"
+  pmd_badge_color:
+    value: "${{ steps.pmd.outputs.badge_color }}"
   healthcheck_badge_label:
     value: "${{ steps.healthcheck.outputs.badge_label }}"
+  healthcheck_badge_color:
+    value: "${{ steps.healthcheck.outputs.badge_color }}"
 
 runs:
   using: "composite"

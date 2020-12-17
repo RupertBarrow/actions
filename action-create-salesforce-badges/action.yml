@@ -22,6 +22,10 @@ runs:
   using: "composite"
   steps:
 
+    - name: Debug
+      shell: bash
+      run: bash ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/codecoverage.json
+
     - name: Get Test Results
       id: testresults
       shell: bash

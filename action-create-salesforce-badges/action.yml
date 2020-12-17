@@ -25,20 +25,28 @@ runs:
     - name: Get Test Results
       id: testresults
       shell: bash
-      run: echo "::set-output name=badge_label::`bash ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/codecoverage.json`"
+      run: |
+        echo "::set-output name=badge_label::`bash ${{ github.action_path }}/scripts/testresults_badge_label.sh ./reports/codecoverage.json`"
+        echo "::set-output name=badge_color::blue"
 
     - name: Get Code Coverage
       id: codecoverage
       shell: bash
-      run: echo "::set-output name=badge_label::`bash ${{ github.action_path }}/scripts/codecoverage_badge_label.sh ./reports/codecoverage.json`"
+      run: |
+        echo "::set-output name=badge_label::`bash ${{ github.action_path }}/scripts/codecoverage_badge_label.sh ./reports/codecoverage.json`"
+        echo "::set-output name=badge_color::orange"
 
     - name: Get PMD Analysis
       id: pmd
       shell: bash
-      run: echo "::set-output name=badge_label::`bash ${{ github.action_path }}/scripts/pmd_badge_label.sh ./reports/pmd.json`"
+      run: |
+        echo "::set-output name=badge_label::`bash ${{ github.action_path }}/scripts/pmd_badge_label.sh ./reports/pmd.json`"
+        echo "::set-output name=badge_color::green"
 
     - name: Get Health Check
       id: healthcheck
       shell: bash
-      run: echo "::set-output name=badge_label::`bash ${{ github.action_path }}/scripts/healthcheck_badge_label.sh ./reports/healthcheck.json`"
+      run: |
+        echo "::set-output name=badge_label::`bash ${{ github.action_path }}/scripts/healthcheck_badge_label.sh ./reports/healthcheck.json`"
+        echo "::set-output name=badge_color::darkblue"
 

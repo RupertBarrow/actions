@@ -40,6 +40,7 @@ runs:
       shell: bash
       run: |
         echo 'y' | sfdx plugins:install sfpowerkit
+        echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
         sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
         sfdx force:config:set defaultusername=checkout        
 

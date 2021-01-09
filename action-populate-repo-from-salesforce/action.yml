@@ -12,10 +12,13 @@ inputs:
     required: false
   salesforce_username:
     description: Salesforce org admin username
-    required: false
+    required: true
   salesforce_password:
-    description: Salesforce org admin password, concatenated with security token
-    required: false
+    description: Salesforce org admin password
+    required: true
+  salesforce_security_token:
+    description: Salesforce security toker
+    required: true
   folder_to_commit:
     description: Which folder should we commit to Git, default being .
     default: .
@@ -37,7 +40,7 @@ runs:
       shell: bash
       run: |
         echo 'y' | sfdx plugins:install sfpowerkit
-        sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
+        sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
         sfdx force:config:set defaultusername=checkout        
 
     - name: Retrieve source from Salesforce organization

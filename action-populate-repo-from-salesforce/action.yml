@@ -2,9 +2,9 @@ name: Populate Github repository from Salesforce org
 
 # Salesforce login parameters.
 # Login with :
-# - either salesforce_url, salesforce_username, salesforce_password
-# - or with salesforce_accesstoken
-# - or with salesforce_authurl
+# - either salesforce_url, salesforce_username, salesforce_password salesforce_security_token
+# - (tbc : or with salesforce_accesstoken)
+# - (tbc : or with salesforce_authurl)
 
 inputs:
   salesforce_url:

@@ -45,7 +45,7 @@ runs:
         if [ ! -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
         then
 #         Log in with SFDX auth URL
-          echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
+          'echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt'
           echo sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
           sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
           rm -f ./sfdxauthurl.txt

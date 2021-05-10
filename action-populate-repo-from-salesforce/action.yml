@@ -41,12 +41,12 @@ runs:
         
     - name: Store SFDX auth URL
       shell: bash
-      if: ${{ inputs.salesforce_sfdx_auth_url != '' }}
+      if: ${{ inputs.salesforce_sfdx_auth_url }}
       run: 'echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt'
 
     - name: Log in with SFDX auth URL, if it is defined
       shell: bash
-      if: ${{ inputs.salesforce_sfdx_auth_url != '' }}
+      if: ${{ inputs.salesforce_sfdx_auth_url }}
       run: |
         echo sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
         sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
@@ -54,7 +54,7 @@ runs:
         
     - name: Log in with username + password + security token, if security token is defined
       shell: bash
-      if: ${{ inputs.salesforce_sfdx_auth_url == ''  &&  inputs.salesforce_security_token != ''}}
+      if: ${{ !inputs.salesforce_sfdx_auth_url  &&   inputs.salesforce_security_token}}
       run: |
         echo 'y' | sfdx plugins:install sfpowerkit
         echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
@@ -62,7 +62,7 @@ runs:
 
     - name: Log in with username + password, if auth url and security token are not defined
       shell: bash
-      if: ${{ inputs.salesforce_sfdx_auth_url == ''  &&  inputs.salesforce_security_token == ''}}
+      if: ${{ !inputs.salesforce_sfdx_auth_url  &&   !inputs.salesforce_security_token}}
       run: |
         echo 'y' | sfdx plugins:install sfpowerkit
         echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout

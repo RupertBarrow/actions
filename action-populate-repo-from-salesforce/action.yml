@@ -50,12 +50,11 @@ runs:
       shell: bash
       run: |
       if [ ! -z "${{inputs.salesforce_sfdx_auth_url}}" ]; then (echo sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout;  sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout; rm -f ./sfdxauthurl.txt) ; fi
-      sfdx force:config:set defaultusername=checkout        
 
     - name: Retrieve source from Salesforce organization
       shell: bash
       run: |
-        sfdx force:source:retrieve -x ./manifest/package.xml
+        sfdx force:source:retrieve -a checkout -x ./manifest/package.xml
         if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
 
 #        apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git

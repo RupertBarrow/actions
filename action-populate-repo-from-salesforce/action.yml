@@ -37,6 +37,7 @@ inputs:
 
 runs:
   using: "composite"
+  shell: bash
   steps:        
         
     - name: Store SFDX auth URL
@@ -44,7 +45,6 @@ runs:
       run: 'echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt'
 
     - name: Log in with SFDX auth URL, if it is defined
-      shell: bash
       if: ${{ inputs.salesforce_sfdx_auth_url != '' }}
       run: |
         echo sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
@@ -52,7 +52,6 @@ runs:
         rm -f ./sfdxauthurl.txt
         
     - name: Log in with username + password + security token, if security token is defined
-      shell: bash
       if: ${{ inputs.salesforce_sfdx_auth_url == ''  &&  inputs.salesforce_security_token != ''}}
       run: |
         echo 'y' | sfdx plugins:install sfpowerkit
@@ -60,7 +59,6 @@ runs:
         sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
 
     - name: Log in with username + password, if auth url and security token are not defined
-      shell: bash
       if: ${{ inputs.salesforce_sfdx_auth_url == ''  &&  inputs.salesforce_security_token == ''}}
       run: |
         echo 'y' | sfdx plugins:install sfpowerkit
@@ -68,11 +66,9 @@ runs:
         sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
 
     - name: Set default username
-      shell: bash
       run: sfdx force:config:set defaultusername=checkout        
 
     - name: Retrieve source from Salesforce organization
-      shell: bash
       run: |
         sfdx force:source:retrieve -x ./manifest/package.xml
         if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
@@ -80,15 +76,12 @@ runs:
 #        apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
 
     - name: Configure git settings
-      shell: bash
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
 
     - name: git add ?
-      shell: bash
       run: ( ${{ inputs.do_git_add }} && git add ${{ inputs.folder_to_commit }} )  || true
 
     - name: git commit ?
-      shell: bash
       run: ( ${{ inputs.do_git_commit }} && git commit -m "Updated from Salesforce" )  || true

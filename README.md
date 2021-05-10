@@ -1,11 +1,11 @@
-# Github actions for Salesforce, by Devoteam
+# Github actions for Salesforce
 
-Salesforce DevOps on Github, by Devoteam
+Salesforce DevOps on Github
 
 
 ## Objectives
 
-Set up very easy tooling for Salesforce Devops, on Github, requiring absokutely no technical Knowledge :
+Set up very easy tooling for Salesforce Devops, on Github, requiring absokutely no technical knowledge :
 - very easily initialize a Github repository with Salesforce metadata (code, configuration, objects, fields etc.) from production
 - initialize a Github branch for each major sandbox of the delivery cycle (DEV, INT, UAT)
 - automatically retrieve changes in PROD, UAT, INT, DEV into Github, so nothing is lost
@@ -41,6 +41,7 @@ Save the Salesforce credentials in secrets (secret variables) : in the repositor
   - ```SALESFORCE_URL``` : the domain url of the org, i.e. ```https://login/salesforce.com``` for production or ```https://test.salesforce.com``` for a sandbox
   - ```SALESFORCE_USERNAME``` : the username of the admin
   - ```SALESFORCE_PASSWORD``` : the password of the admin, concatenated with the Salesforce security key
+  - ```SALESFORCE_SFDX_AUTH_URL``` : the SFDX auth url (retrieve this with : sfdx force:org:display -u <alias or username>) --verbose)
   - ```GITHUB_TOKEN``` : create your own Github personal access token (https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token) and put it here
 
 

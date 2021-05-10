@@ -42,14 +42,13 @@ runs:
     - name: Add SFDX Powerkit Plugin for login with username and password, including security token
       shell: bash
       run: |
-        echo salesforce_sfdx_auth_url = ${{ inputs.salesforce_sfdx_auth_url }}
         if [ ! -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
         then
 #         Log in with SFDX auth URL
-          echo ${{ inputs.salesforce_sfdx_auth_url }} > /tmp/sfdxauthurl.txt
-          echo sfdx auth:sfdxurl:store -f /tmp/sfdxauthurl.txt -s -a checkout
-          sfdx auth:sfdxurl:store -f /tmp/sfdxauthurl.txt -s -a checkout
-          rm -f /tmp/sfdxauthurl.txt
+          echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
+          echo sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
+          sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
+          rm -f ./sfdxauthurl.txt
         else
 #         Install sfpowerkit plugin
           echo 'y' | sfdx plugins:install sfpowerkit

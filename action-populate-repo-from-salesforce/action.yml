@@ -50,7 +50,7 @@ runs:
       shell: bash
       run: |
       if [ ! -z "${{inputs.salesforce_sfdx_auth_url}}" ]; then (echo sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout;  sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout; rm -f ./sfdxauthurl.txt) ; fi
-      if [   -z "${{inputs.salesforce_sfdx_auth_url}}" ]; then echo "### OK"; fi
+      if [   -z "${{inputs.salesforce_sfdx_auth_url}}" ]; then (echo "aaaaaaaaaaaaaa OK aaaaaaaaaaaa"); fi
       sfdx force:config:set defaultusername=checkout        
 
     - name: Retrieve source from Salesforce organization

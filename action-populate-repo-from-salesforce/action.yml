@@ -39,31 +39,34 @@ runs:
   using: "composite"
   steps:        
         
-    - name: Add SFDX Powerkit Plugin for login with username and password, including security token
+    - name: Log in with SFDX auth URL, if it is defined
       shell: bash
+      if: ! -z "${{ inputs.salesforce_sfdx_auth_url }}"
       run: |
-        if [ ! -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
-        then
-          'echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt'
-          echo sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
-          sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
-          rm -f ./sfdxauthurl.txt
-        fi
+        'echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt'
+        echo sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
+        sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
+        rm -f ./sfdxauthurl.txt
         
-        if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" && -z "${{ inputs.salesforce_security_token }}" ]
-        then
-          echo 'y' | sfdx plugins:install sfpowerkit
-          echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
-          sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
-        fi
-        
-        if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" && ! -z "${{ inputs.salesforce_security_token }}" ]
-          echo 'y' | sfdx plugins:install sfpowerkit
-          echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
-          sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
-        fi
-        
-        sfdx force:config:set defaultusername=checkout        
+    - name: Log in with username + password + security token, if security token is defined
+      shell: bash
+      if: -z "${{ inputs.salesforce_sfdx_auth_url }}" && ! -z "${{ inputs.salesforce_security_token }}" 
+      run: |
+        echo 'y' | sfdx plugins:install sfpowerkit
+        echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
+        sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
+
+    - name: Log in with username + password, if auth url and security token are not defined
+      shell: bash
+      if: -z "${{ inputs.salesforce_sfdx_auth_url }}" && -z "${{ inputs.salesforce_security_token }}" 
+      run: |
+        echo 'y' | sfdx plugins:install sfpowerkit
+        echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
+        sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
+
+    - name: Set default username
+      shell: bash
+      run: sfdx force:config:set defaultusername=checkout        
 
     - name: Retrieve source from Salesforce organization
       shell: bash
@@ -73,7 +76,7 @@ runs:
 
 #        apt-get update && apt-get install software-properties-common -y && apt-add-repository ppa:git-core/ppa && apt-get update && apt-get install -y git
 
-    - name: Update container version of git, and commit results to Git
+    - name: Configure git settings
       shell: bash
       run: |
         git config --local user.email "action@github.com"

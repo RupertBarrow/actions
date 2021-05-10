@@ -44,7 +44,6 @@ runs:
       run: |
         if [ ! -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
         then
-#         Log in with SFDX auth URL
           'echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt'
           echo sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
           sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
@@ -53,14 +52,12 @@ runs:
         
         if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" && -z "${{ inputs.salesforce_security_token }}" ]
         then
-#         Install sfpowerkit plugin and Log in with username + password
           echo 'y' | sfdx plugins:install sfpowerkit
           echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
           sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
         fi
         
         if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" && ! -z "${{ inputs.salesforce_security_token }}" ]
-#         Install sfpowerkit plugin and Log in with username + password + salesforce security token
           echo 'y' | sfdx plugins:install sfpowerkit
           echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
           sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout

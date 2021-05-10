@@ -61,7 +61,7 @@ runs:
           fi
         else
           echo
-          sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
+          sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
         fi
         sfdx force:config:set defaultusername=checkout        
 

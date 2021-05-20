@@ -42,7 +42,9 @@ runs:
         
     - name: Store SFDX auth URL
       shell: bash
-      run: 'echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt'
+      run: |
+        echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
+        cat ./sfdxauthurl.txt
 
 #       if [   -z "${{inputs.salesforce_sfdx_auth_url}}" ]; the if [ ! -z "${{inputs.salesforce_security_token}}" ]; then (echo 'y' | sfdx plugins:install sfpowerkit; echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout; sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout) ; fi; fi
 #      if [   -z "${{inputs.salesforce_sfdx_auth_url}}" &&   -z "${{inputs.salesforce_security_token}}" ]; then (echo 'y' | sfdx plugins:install sfpowerkit; echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout; sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout) ; fi

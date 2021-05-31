@@ -10,6 +10,12 @@ inputs:
   salesforce_password:
     description: Salesforce org admin password, concatenated with security token
     required: false
+  salesforce_security_token:
+    description: Salesforce security toker
+    required: false
+  salesforce_sfdx_auth_url:
+    description: Salesforce SFDX auth URL
+    required: false
 
 runs:
   using: "composite"
@@ -27,4 +33,4 @@ runs:
       env:
         ACTION_PATH: "/__w/_actions/AltiusRupert/actions/main/action-run-salesforce-tests"
       run: |
-        bash $ACTION_PATH/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
+        bash $ACTION_PATH/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -l ${{ inputs.salesforce_sfdx_auth_url }}

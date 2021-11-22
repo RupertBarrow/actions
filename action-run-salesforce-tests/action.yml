@@ -30,7 +30,5 @@ runs:
     - name: Run tests
       id: runtests
       shell: bash
-      env:
-        ACTION_PATH: "/__w/_actions/RupertBarrow/actions/main/action-run-salesforce-tests"
       run: |
-        bash $ACTION_PATH/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -l ${{ inputs.salesforce_sfdx_auth_url }}
+        bash ${{ github.action.path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -l ${{ inputs.salesforce_sfdx_auth_url }}

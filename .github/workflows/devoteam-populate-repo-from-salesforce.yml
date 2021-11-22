@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0              # otherwise, you will failed to push refs to dest repo
       
       - name: Populate git with metadata from Salesforce org
-        uses: AltiusRupert/actions/action-populate-repo-from-salesforce@main
+        uses: RupertBarrow/actions/action-populate-repo-from-salesforce@main
         with:
           salesforce_url:      ${{ secrets.SALESFORCE_URL }}
           salesforce_username: ${{ secrets.SALESFORCE_USERNAME }}

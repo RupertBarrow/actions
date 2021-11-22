@@ -31,4 +31,4 @@ runs:
       id: runtests
       shell: bash
       run: |
-        bash ${{ github.action.path }}/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -l ${{ inputs.salesforce_sfdx_auth_url }}
+        bash $GITHUB_ACTION_PATH/scripts/run-salesforce-tests.sh -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -l ${{ inputs.salesforce_sfdx_auth_url }}

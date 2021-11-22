@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: Get Salesforce metadata from org
-        uses: AltiusRupert/actions/action-populate-repo-from-salesforce@main
+        uses: RupertBarrow/actions/action-populate-repo-from-salesforce@main
         with:
          salesforce_url:      ${{ secrets.SALESFORCE_URL }}
          salesforce_username: ${{ secrets.SALESFORCE_USERNAME }}

@@ -7,7 +7,7 @@ echo 'y' | sfdx plugins:install sfpowerkit
 while getopts ":l" option; do
    case $option in
       l) # login url
-         sfdx_auth_url=$2
+         sfdx_auth_url="$2"
          shift
          ;;
      \?) # Invalid option

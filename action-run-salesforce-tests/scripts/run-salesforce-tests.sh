@@ -2,7 +2,21 @@
 
 # Install SFpowerkit plugin, and log in
 echo 'y' | sfdx plugins:install sfpowerkit
-sfdx sfpowerkit:auth:login -a checkout $*
+
+while getopts ":l" option; do
+   case $option in
+      h) # display Help
+         sfdx_auth_url=$OPTARG;;
+     \?) # Invalid option
+         echo "Error: Invalid option"
+         exit;;
+   esac
+done
+
+echo  $sfdx_auth_url > ./sfdxauthurl.txt
+sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt
+rm -f ./sfdxauthurl.txt
+#sfdx sfpowerkit:auth:login -a checkout $*
 sfdx force:config:set defaultusername=checkout        
 
 # Retrieve metadata from Salesforce org

@@ -71,6 +71,7 @@ runs:
     - name: Retrieve source from Salesforce organization
       shell: bash
       run: |
+        git config --global --add safe.directory .
         git status
         sfdx force:source:retrieve -m ApexClass
         git status

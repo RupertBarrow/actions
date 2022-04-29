@@ -71,16 +71,13 @@ runs:
     - name: Retrieve source from Salesforce organization
       shell: bash
       run: |
-        git config --global --add safe.directory /__w/TerreDeLiens/TerreDeLiens
-        git status
-        sfdx force:source:retrieve -m ApexClass
-        git status
-      
-      #if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
+        sfdx force:source:retrieve -x manifest/package.xml
+        if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
 
     - name: Configure git settings
       shell: bash
       run: |
+        git config --global --add safe.directory `pwd`
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
 

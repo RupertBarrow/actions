@@ -7,10 +7,13 @@ echo 'y' | sfdx plugins:install sfpowerkit
 while getopts ":l" option; do
    case $option in
       l) # login url
-         sfdx_auth_url=$1; shift;;
+         sfdx_auth_url=$2
+         shift
+         ;;
      \?) # Invalid option
          echo "Error: Invalid option"
-         exit;;
+         exit
+         ;;
    esac
 done
 

@@ -71,15 +71,14 @@ runs:
     - name: Retrieve source from Salesforce organization
       shell: bash
       run: |
-        #sfdx force:source:retrieve -x ./manifest/package.xml
         sfdx force:source:retrieve -m ApexClass
         if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
 
     - name: Configure git settings
       shell: bash
       run: |
-        git config user.email "action@github.com"
-        git config user.name "GitHub Action"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
 
     - name: git add ?
       shell: bash

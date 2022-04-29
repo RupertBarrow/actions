@@ -71,6 +71,7 @@ runs:
     - name: Retrieve source from Salesforce organization
       shell: bash
       run: |
+      pwd && ls -al && git status
         sfdx force:source:retrieve -m ApexClass
         if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
 

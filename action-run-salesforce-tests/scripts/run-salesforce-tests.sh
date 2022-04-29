@@ -14,7 +14,7 @@ while getopts ":l" option; do
 done
 
 echo  $sfdx_auth_url > ./sfdxauthurl.txt
-sfdx auth:sfdxurl:store -f ./sfdxauthurl.txt
+sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt
 rm -f ./sfdxauthurl.txt
 #sfdx sfpowerkit:auth:login -a checkout $*
 sfdx force:config:set defaultusername=checkout        

@@ -3,9 +3,10 @@
 # Install SFpowerkit plugin, and log in
 echo 'y' | sfdx plugins:install sfpowerkit
 
+sfdx_auth_url=''
 while getopts ":l" option; do
    case $option in
-      h) # display Help
+      l) # login url
          sfdx_auth_url=$OPTARG;;
      \?) # Invalid option
          echo "Error: Invalid option"
@@ -13,7 +14,7 @@ while getopts ":l" option; do
    esac
 done
 
-echo  $sfdx_auth_url > ./sfdxauthurl.txt
+echo $sfdx_auth_url > ./sfdxauthurl.txt
 sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt
 rm -f ./sfdxauthurl.txt
 #sfdx sfpowerkit:auth:login -a checkout $*

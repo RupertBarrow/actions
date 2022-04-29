@@ -3,11 +3,11 @@
 # Install SFpowerkit plugin, and log in
 echo 'y' | sfdx plugins:install sfpowerkit
 
-sfdx_auth_url=''
+#https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
 while getopts ":l" option; do
    case $option in
       l) # login url
-         sfdx_auth_url=$OPTARG;;
+         sfdx_auth_url=$1; shift;;
      \?) # Invalid option
          echo "Error: Invalid option"
          exit;;

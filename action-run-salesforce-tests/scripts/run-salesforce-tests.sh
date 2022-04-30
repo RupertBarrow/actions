@@ -39,8 +39,8 @@ sfdx sfpowerkit:source:pmd -d ./force-app/main/default -r category/apex/design.x
 # Run Code Coverage
 touch ./reports/codecoverage.json
 touch ./reports/codecoverage.txt
-$( sfdx force:apex:test:run -c -u checkout -r json  > ./reports/codecoverage.json ) || true
-$( sfdx force:apex:test:run -c -u checkout -r human > ./reports/codecoverage.txt  ) || true
+$( sfdx force:apex:test:run -c -u checkout --wait=30 -r json  > ./reports/codecoverage.json ) || true
+$( sfdx force:apex:test:run -c -u checkout --wait=30 -r human > ./reports/codecoverage.txt  ) || true
 
 # Run Health Check
 touch ./reports/healthcheck.json

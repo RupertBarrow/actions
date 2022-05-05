@@ -35,6 +35,10 @@ inputs:
     description: Do you want to git commit ?
     default: false
     required: false
+  package_xml:
+    description: package.xml manifest file to use for checkout
+    default: manifest/package.cml
+    required: true
 
 runs:
   using: "composite"
@@ -71,8 +75,9 @@ runs:
     - name: Retrieve source from Salesforce organization
       shell: bash
       run: |
-        sfdx force:source:retrieve -x manifest/package.xml
+        sfdx force:source:retrieve -x ${{ inputs.package_xml }}
         
+      #sfdx force:source:retrieve -x manifest/package.xml 
       #if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
 
     - name: Configure git settings

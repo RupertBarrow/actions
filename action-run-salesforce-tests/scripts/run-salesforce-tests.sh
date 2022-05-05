@@ -34,7 +34,8 @@ mkdir -p ./reports
 
 # Run Apex PMD Static (Code Analyzer)
 touch ./reports/pmd.json
-sfdx sfpowerkit:source:pmd -d ./force-app/main/default -r category/apex/design.xml -f json -o ./reports/pmd.json || true
+#sfdx sfpowerkit:source:pmd -d ./force-app/main/default -r category/apex/design.xml -f json -o ./reports/pmd.json || true
+sfdx sfpowerkit:source:pmd -d ./force-app/main/default -R category/apex/design.xml -f json -o ./reports/pmd.json || true
 
 # Run Code Coverage
 touch ./reports/codecoverage.json

@@ -37,7 +37,7 @@ inputs:
     required: false
   package_xml:
     description: package.xml manifest file to use for checkout
-    default: manifest/package.cml
+    default: manifest/package-snapshot.xml
     required: true
 
 runs:

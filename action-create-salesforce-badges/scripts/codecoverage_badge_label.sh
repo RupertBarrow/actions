@@ -1,7 +1,15 @@
 #!/bin/bash
 
-ORGWIDECOVERAGE=` cat ./reports/codecoverage.json | jq .result.summary.orgWideCoverage | sed 's/"//g'`
-TESTSRUNCOVERAGE=`cat ./reports/codecoverage.json | jq .result.summary.testRunCoverage | sed 's/"//g'`
+FILE=$1
+
+ORGWIDECOVERAGE=` cat $FILE | jq .summary.orgWideCoverage | sed 's/"//g'`
+TESTSRUNCOVERAGE=`cat $FILE | jq .summary.testRunCoverage | sed 's/"//g'`
 DT=$( date )
 
-echo "testsrun:${TESTSRUNCOVERAGE} org:${ORGWIDECOVERAGE} ($DT)"
+if [ $ORGWIDECOVERAGE == 'null' ] || [ $TESTSRUNCOVERAGE == 'null' ]
+then
+  echo "testsrun:ERROR org:ERROR ($DT)"
+  exit 1
+else
+  echo "testsrun:${TESTSRUNCOVERAGE} org:${ORGWIDECOVERAGE} ($DT)"
+fi

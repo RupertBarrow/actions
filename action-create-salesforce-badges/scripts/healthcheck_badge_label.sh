@@ -10,4 +10,10 @@ LOWISKITEMS=$(            cat $FILE | jq -r ' .lowriskitems[]'           | wc -l
 INFORMATIONALRISKITEMS=$( cat $FILE | jq -r ' .informationalriskitems[]' | wc -l | xargs)
 DT=$( date )
 
-echo "H:${HIGHRISKITEMS} M:${MEDIUMRISKITEMS} L:${LOWISKITEMS} i:${INFORMATIONALRISKITEMS} ($DT)"
+if [ $HIGHRISKITEMS == 'null' ] || [ $MEDIUMRISKITEMS == 'null' ] || [ $LOWISKITEMS == 'null' ] || [ $INFORMATIONALRISKITEMS == 'null' ]
+then
+  echo "ERROR ($DT)"
+  exit 1
+else
+  echo "H:${HIGHRISKITEMS} M:${MEDIUMRISKITEMS} L:${LOWISKITEMS} i:${INFORMATIONALRISKITEMS} ($DT)"
+fi

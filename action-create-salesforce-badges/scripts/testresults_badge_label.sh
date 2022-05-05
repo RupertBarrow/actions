@@ -7,4 +7,10 @@ TESTSRAN=$(cat $FILE | jq .result.summary.testsRan)
 PASSRATE=$(cat $FILE | jq .result.summary.passRate | sed 's/"//g')
 DT=$( date )
 
-echo "${PASSING}/${TESTSRAN} ${PASSRATE} ($DT)"
+if [ $PASSING == 'null' ] || [ $TESTSRAN == 'null' ] || [ $PASSRATE == 'null' ]
+then
+  echo "ERROR ($DT)"
+  exit 1
+else
+  echo "${PASSING}/${TESTSRAN} ${PASSRATE} ($DT)"
+fi

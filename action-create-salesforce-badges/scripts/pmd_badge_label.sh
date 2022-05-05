@@ -17,4 +17,10 @@ MINORS=$(nboccurrences 4 $FILE)
 INFOS=$(nboccurrences 5 $FILE)
 DT=$( date )
 
-echo "B:${BLOCKERS} F:${FATALS} M:${MAJORS} m:${MINORS} i:${INFOS} ($DT)"
+if [ $BLOCKERS == 'null' ] || [ $FATALS == 'null' ] || [ $MAJORS == 'null' ] || [ $MINORS == 'null' ] || [ $INFOS == 'null' ]
+then
+  echo "ERROR ($DT)"
+  exit 1
+else
+    echo "B:${BLOCKERS} F:${FATALS} M:${MAJORS} m:${MINORS} i:${INFOS} ($DT)"
+fi

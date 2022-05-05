@@ -38,7 +38,7 @@ inputs:
   package_xml:
     description: package.xml manifest file to use for checkout
     default: manifest/package-snapshot.xml
-    required: true
+    required: false
 
 runs:
   using: "composite"

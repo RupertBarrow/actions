@@ -1,7 +1,8 @@
 #!/bin/bash
 
-#./reports/healthcheck.json
+set -x
 
+#./reports/healthcheck.json
 FILE=$1 
 
 HIGHRISKITEMS=$(          cat $FILE | jq -r ' .highriskitems[]'          | wc -l | xargs)

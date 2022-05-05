@@ -1,5 +1,10 @@
 #!/bin/bash
 
+echo "######"
+echo "This directory :"
+pwd
+echo "######"
+
 # Install SFpowerkit plugin, and log in
 echo 'y' | sfdx plugins:install sfpowerkit
 

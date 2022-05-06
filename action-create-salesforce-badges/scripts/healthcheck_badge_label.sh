@@ -1,20 +1,18 @@
 #!/bin/bash
 
-set -x
-
 #./reports/healthcheck.json
 FILE=$1 
 
-HIGHRISKITEMS=$(          cat $FILE | jq -r ' .highriskitems[]'          | wc -l | xargs)
-MEDIUMRISKITEMS=$(        cat $FILE | jq -r ' .mediumriskitems[]'        | wc -l | xargs)
-LOWISKITEMS=$(            cat $FILE | jq -r ' .lowriskitems[]'           | wc -l | xargs)
-INFORMATIONALRISKITEMS=$( cat $FILE | jq -r ' .informationalriskitems[]' | wc -l | xargs)
+HIGHRISKITEMS=$(          cat $FILE | jq -r ' .highriskitems[]'          | wc -l | xargs > /tmp/res.txt && cat /tmp/res.txt)
+MEDIUMRISKITEMS=$(        cat $FILE | jq -r ' .mediumriskitems[]'        | wc -l | xargs > /tmp/res.txt && cat /tmp/res.txt)
+LOWRISKITEMS=$(           cat $FILE | jq -r ' .lowriskitems[]'           | wc -l | xargs > /tmp/res.txt && cat /tmp/res.txt)
+INFORMATIONALRISKITEMS=$( cat $FILE | jq -r ' .informationalriskitems[]' | wc -l | xargs > /tmp/res.txt && cat /tmp/res.txt)
 DT=$( date )
 
-if [ $HIGHRISKITEMS == 'null' ] || [ $MEDIUMRISKITEMS == 'null' ] || [ $LOWISKITEMS == 'null' ] || [ $INFORMATIONALRISKITEMS == 'null' ]
+if [ $HIGHRISKITEMS == 'null' ] || [ $MEDIUMRISKITEMS == 'null' ] || [ $LOWRISKITEMS == 'null' ] || [ $INFORMATIONALRISKITEMS == 'null' ]
 then
   echo "ERROR ($DT)"
   exit 1
 else
-  echo "H:${HIGHRISKITEMS} M:${MEDIUMRISKITEMS} L:${LOWISKITEMS} i:${INFORMATIONALRISKITEMS} ($DT)"
+  echo "H:${HIGHRISKITEMS} M:${MEDIUMRISKITEMS} L:${LOWRISKITEMS} i:${INFORMATIONALRISKITEMS} ($DT)"
 fi

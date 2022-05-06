@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 FILE=$1
 
 nboccurrences() {

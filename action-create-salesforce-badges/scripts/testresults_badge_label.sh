@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 FILE=$1
 
 PASSING=$( cat $FILE | jq .result.summary.passing)

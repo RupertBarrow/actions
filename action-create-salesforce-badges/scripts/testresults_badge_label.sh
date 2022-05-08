@@ -5,7 +5,7 @@ FILE=$1
 PASSING=$( cat $FILE | jq .result.summary.passing)
 TESTSRAN=$(cat $FILE | jq .result.summary.testsRan)
 PASSRATE=$(cat $FILE | jq .result.summary.passRate | sed 's/"//g')
-DT=$( date )
+DT=$( date "+%a %d %b %Y, %H:%M %Z" )
 
 if [ $PASSING == 'null' ] || [ $TESTSRAN == 'null' ] || [ $PASSRATE == 'null' ]
 then

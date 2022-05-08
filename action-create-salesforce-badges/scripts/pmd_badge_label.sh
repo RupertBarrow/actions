@@ -11,11 +11,11 @@ nboccurrences() {
 }
 
 BLOCKERS=$(nboccurrences 1 $FILE)
-FATALS=$(nboccurrences 2 $FILE)
-MAJORS=$(nboccurrences 3 $FILE)
-MINORS=$(nboccurrences 4 $FILE)
-INFOS=$(nboccurrences 5 $FILE)
-DT=$( date )
+FATALS=$(  nboccurrences 2 $FILE)
+MAJORS=$(  nboccurrences 3 $FILE)
+MINORS=$(  nboccurrences 4 $FILE)
+INFOS=$(   nboccurrences 5 $FILE)
+DT=$( date "+%a %d %b %Y, %H:%M %Z" )
 
 if [ $BLOCKERS == 'null' ] || [ $FATALS == 'null' ] || [ $MAJORS == 'null' ] || [ $MINORS == 'null' ] || [ $INFOS == 'null' ]
 then

@@ -1,10 +1,5 @@
 #!/bin/bash
 
-set -x
-
-pwd
-ls -al
-
 FILE=$1
 
 ORGWIDECOVERAGE=` cat $FILE | jq .result.summary.orgWideCoverage | sed 's/"//g'`

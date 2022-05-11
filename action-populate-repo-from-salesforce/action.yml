@@ -70,7 +70,8 @@ runs:
           echo sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
           sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
         fi
-        sfdx force:config:set defaultusername=checkout        
+        sfdx force:config:set defaultusername=checkout
+        rm -f ./sfdxauthurl.txt
 
     - name: Retrieve source from Salesforce organization
       shell: bash

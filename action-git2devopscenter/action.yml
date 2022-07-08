@@ -19,4 +19,4 @@ runs:
         echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
         sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
         rm -f ./sfdxauthurl.txt
-        sfdx data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='${{ inputs.subject }}'"
+        sfdx force:data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='${{ inputs.subject }}'"

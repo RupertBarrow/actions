@@ -14,6 +14,8 @@ runs:
     - name: Store SFDX auth URL and authenticate
       shell: bash
       run: |
+        set -x
+        cd .github/workflows/sfdx-project
         echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
         sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
         sfdx force:config:set defaultusername=devopscenter
@@ -24,7 +26,6 @@ runs:
       run: |
         set -x
         pwd
-        ls -al
         cd .github/workflows/sfdx-project
         pwd
         sfdx data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='${{ inputs.subject }}'" -u devopscenter

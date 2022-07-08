@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -x
+pwd
 
 
 salesforce_sfdx_auth_url=$1

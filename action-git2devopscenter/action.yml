@@ -1,4 +1,4 @@
-name: Git2DevopsCenter create issue
+name: Git2DevopsCenter create Work Item from Issue
 
 inputs:
   salesforce_sfdx_auth_url:
@@ -7,17 +7,22 @@ inputs:
   subject:
     description: Issue subject
     required: true
-  devopscenter_projectid:
-    description: Salesforce projectid of the DevOps Center project
-    required: false
+  body:
+    description: Issue body
+    required: true
   devopscenter_project_name:
     description: Name of the DevOps Center project
     required: false
 
+outputs:
+  work-item-name:
+    description: "Work Item name"
+    value: ${{ steps.create-work-item.outputs.wi }}
+
 runs:
   using: "composite"
   steps:
-    - name: Create issue
+    - name: create-work-item
       shell: bash
       run: |
         set -x
@@ -25,6 +30,4 @@ runs:
         echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
         sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
         rm -f ./sfdxauthurl.txt
-        #projectid=`sfdx force:data:soql:query -q "SELECT Id FROM sf_devops__Project__c WHERE Name='${{ inputs.devopscenter_project_name }}'" --json | jq '.result.records[0].Id'`
-        #sfdx force:data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='${{ inputs.subject }}' sf_devops__Project__c=${{ inputs.devopscenter_projectid }}"
-        sfdx force:data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='${{ inputs.subject }}' sf_devops__Project__c=`   sfdx force:data:soql:query -q "SELECT Id FROM sf_devops__Project__c WHERE Name='${{ inputs.devopscenter_project_name }}'" --json | jq '.result.records[0].Id'   `"
+        echo "::set-output name=wi::$(   sfdx force:data:soql:query -q "SELECT Name FROM sf_devops__Work_Item__c WHERE Id=`        sfdx force:data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='${{ inputs.subject }}' sf_devops__Description__c='${{ inputs.body }}' sf_devops__Project__c=`   sfdx force:data:soql:query -q "SELECT Id FROM sf_devops__Project__c WHERE Name='${{ inputs.devopscenter_project_name }}'" --json | jq '.result.records[0].Id'   `" --json | jq .result.id      `" --json | jq .result.records[0].Name   )"

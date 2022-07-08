@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
-pwd
-ls -al
-
 
 salesforce_sfdx_auth_url=$1
 subject=$2
@@ -30,6 +26,7 @@ workitemid=$(echo $workitemid | sed -r "s/\"+//g")
 
 # Recherche du nom du work item
 workitemname=$(sfdx force:data:record:get -s sf_devops__Work_Item__c -i $workitemid                                                                                              --json | jq '.result.Name')
+workitemname=$(echo $workitemname | sed -r "s/\"+//g")
 
 
 # Valeur renvoyée

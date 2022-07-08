@@ -26,10 +26,4 @@ runs:
       shell: bash
       run: |
         set -x
-        pwd
-        ls -al
-        ls -al ../..
-        ls -al ../../_actions
-        ls -al ../../_actions/rupertbarrow
-        ls -al ../../_actions/rupertbarrow/actions
-        echo "::set-output name=workitem::$(  /__w/_actions/rupertbarrow/actions/action-git2devopscenter/scripts/create-work-itme.sh ${{ inputs.salesforce_sfdx_auth_url }}  \"${{ inputs.subject }}\"  \"${{ inputs.body }}\"  \"${{ inputs.devopscenter_project_name }}\"  )"
+        echo "::set-output name=workitem::$(  $GITHUB_ACTION_PATH/scripts/create-work-item.sh ${{ inputs.salesforce_sfdx_auth_url }}  \"${{ inputs.subject }}\"  \"${{ inputs.body }}\"  \"${{ inputs.devopscenter_project_name }}\"  )"

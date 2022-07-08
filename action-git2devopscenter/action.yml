@@ -27,4 +27,5 @@ runs:
       run: |
         set -x
         pwd
+        ls -al
         echo "::set-output name=random-number::$(  ./action-git2devopscenter/scripts/create-work-itme.sh ${{ inputs.salesforce_sfdx_auth_url }}  ${{ inputs.subject }}  ${{ inputs.body }}  ${{ inputs.devopscenter_project_name }}  )"

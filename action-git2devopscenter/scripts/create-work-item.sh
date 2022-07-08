@@ -2,6 +2,7 @@
 
 set -x
 pwd
+ls -al
 
 
 salesforce_sfdx_auth_url=$1

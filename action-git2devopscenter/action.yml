@@ -22,13 +22,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: create-work-item
+    - id: create-work-item
       shell: bash
       run: |
-        set -x
-        cd .github/workflows/sfdx-project
-        echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
-        sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
-        rm -f ./sfdxauthurl.txt
-        #echo "::set-output name=wi::$(   sfdx force:data:soql:query -q "SELECT Name FROM sf_devops__Work_Item__c WHERE Id=`        sfdx force:data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='${{ inputs.subject }}' sf_devops__Description__c='${{ inputs.body }}' sf_devops__Project__c=`   sfdx force:data:soql:query -q "SELECT Id FROM sf_devops__Project__c WHERE Name='${{ inputs.devopscenter_project_name }}'" --json | jq '.result.records[0].Id'   `" --json | jq .result.id      `" --json | jq .result.records[0].Name   )"
-        sfdx force:data:soql:query -q "SELECT Name FROM sf_devops__Work_Item__c WHERE Id=`        sfdx force:data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='${{ inputs.subject }}' sf_devops__Description__c='${{ inputs.body }}' sf_devops__Project__c=`   sfdx force:data:soql:query -q "SELECT Id FROM sf_devops__Project__c WHERE Name='${{ inputs.devopscenter_project_name }}'" --json | jq '.result.records[0].Id'   `" --json | jq .result.id      `" --json | jq .result.records[0].Name
+        echo "::set-output name=random-number::$(  ./scripts/create-work-itme.sh ${{ inputs.salesforce_sfdx_auth_url }}  ${{ inputs.subject }}  ${{ inputs.body }}  ${{ inputs.devopscenter_project_name }}  )"

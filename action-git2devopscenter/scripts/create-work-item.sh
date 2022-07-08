@@ -2,9 +2,10 @@
 
 
 salesforce_sfdx_auth_url=$1
-subject=$2
-body=$3
-devopscenter_project_name=$4
+# Escapes the single quotes
+subject=$(                   echo "$2" | sed -e "s/\'/\\\'/g" )
+body=$(                      echo "$3" | sed -e "s/\'/\\\'/g" )
+devopscenter_project_name=$( echo "$4" | sed -e "s/\'/\\\'/g" )
 
 
 cd .github/workflows/sfdx-project
@@ -20,13 +21,9 @@ projectid=$(sfdx force:data:soql:query -q "SELECT Id FROM sf_devops__Project__c 
 
 # Création du work item
 workitemid=$(sfdx force:data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='$subject' sf_devops__Project__c='$projectid' sf_devops__Description__c='$body'" --json | jq -r '.result.id')
-# Exemple : workitemid='"a3N1i000000acNmEAI"'
-# On retire les ""
-#workitemid=$(echo $workitemid | sed -r "s/\"+//g")
 
 # Recherche du nom du work item
 workitemname=$(sfdx force:data:record:get -s sf_devops__Work_Item__c -i $workitemid                                                                                              --json | jq -r '.result.Name')
-#workitemname=$(echo $workitemname | sed -r "s/\"+//g")
 
 
 # Valeur renvoyée

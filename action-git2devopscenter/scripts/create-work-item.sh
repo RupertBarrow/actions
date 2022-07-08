@@ -5,10 +5,10 @@ pwd
 ls -al
 
 
-salesforce_sfdx_auth_url="$1"
-subject="$2"
-body="$3"
-devopscenter_project_name="$4"
+salesforce_sfdx_auth_url=$1
+subject=$2
+body=$3
+devopscenter_project_name=$4
 
 
 cd .github/workflows/sfdx-project

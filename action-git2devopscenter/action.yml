@@ -15,9 +15,9 @@ inputs:
     required: false
 
 outputs:
-  work-item-name:
+  work-item:
     description: "Work Item name"
-    value: ${{ steps.create-work-item.outputs.wi }}
+    value: ${{ steps.create-work-item.outputs.workitem }}
 
 runs:
   using: "composite"
@@ -25,7 +25,4 @@ runs:
     - id: create-work-item
       shell: bash
       run: |
-        set -x
-        pwd
-        ls -al
-        echo "::set-output name=random-number::$(  ./action-git2devopscenter/scripts/create-work-itme.sh ${{ inputs.salesforce_sfdx_auth_url }}  ${{ inputs.subject }}  ${{ inputs.body }}  ${{ inputs.devopscenter_project_name }}  )"
+        echo "::set-output name=workitem::$(  $GITHUB_ACTION_PATH/scripts/create-work-itme.sh ${{ inputs.salesforce_sfdx_auth_url }}  ${{ inputs.subject }}  ${{ inputs.body }}  ${{ inputs.devopscenter_project_name }}  )"

@@ -20,7 +20,7 @@ sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
 rm -f ./sfdxauthurl.txt
 
 # Recherche du projectid à pratir du projectname
-projectid=$(sfdx force:data:soql:query -q "SELECT Id FROM sf_devops__Project__c WHERE Name=$devopscenter_project_name"                                                         --json | jq '.result.records[0].Id')
+projectid=$(sfdx force:data:soql:query -q "SELECT Id FROM sf_devops__Project__c WHERE Name='$devopscenter_project_name'"                                                         --json | jq '.result.records[0].Id')
 
 # Création du work item
 workitemid=$(sfdx force:data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c=$subject sf_devops__Project__c=$projectid sf_devops__Description__c=$body" --json | jq '.result.id')

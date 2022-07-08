@@ -12,7 +12,7 @@ cd .github/workflows/sfdx-project
 
 # Auth
 echo $salesforce_sfdx_auth_url > ./sfdxauthurl.txt
-sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
+sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout --loglevel=error
 rm -f ./sfdxauthurl.txt
 
 # Recherche du projectid à pratir du projectname

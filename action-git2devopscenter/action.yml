@@ -1,8 +1,8 @@
 name: Git2DevopsCenter create issue
 
 inputs:
-  salesforce_url:
-    description: Salesforce org url (best with mydomain.my.salesforce.com, mydomain-dev-ed.my.salesforce ou mydomain--mysandbvox.my.salesforce.com
+  salesforce_sfdx_auth_url:
+    description: Salesforce SFDX auth URL
     required: true
   subject:
     description: Issue subject

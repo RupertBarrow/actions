@@ -25,4 +25,4 @@ runs:
     - id: create-work-item
       shell: bash
       run: |
-        echo "::set-output name=workitem::$(  $GITHUB_ACTION_PATH/scripts/create-work-itme.sh ${{ inputs.salesforce_sfdx_auth_url }}  ${{ inputs.subject }}  ${{ inputs.body }}  ${{ inputs.devopscenter_project_name }}  )"
+        echo "::set-output name=workitem::$(  $GITHUB_ACTION_PATH/scripts/create-work-itme.sh ${{ inputs.salesforce_sfdx_auth_url }}  \"${{ inputs.subject }}\"  \"${{ inputs.body }}\"  \"${{ inputs.devopscenter_project_name }}\"  )"

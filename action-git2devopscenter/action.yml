@@ -1,0 +1,28 @@
+name: Git2DevopsCenter create Work Item from Issue
+
+inputs:
+  salesforce_sfdx_auth_url:
+    description: Salesforce SFDX auth URL
+    required: true
+  subject:
+    description: Issue subject
+    required: true
+  body:
+    description: Issue body
+    required: true
+  devopscenter_project_name:
+    description: Name of the DevOps Center project
+    required: false
+
+outputs:
+  work-item:
+    description: "Work Item name"
+    value: ${{ steps.create-work-item.outputs.workitem }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: create-work-item
+      shell: bash
+      run: |
+        echo "::set-output name=workitem::$(  $GITHUB_ACTION_PATH/scripts/create-work-itme.sh ${{ inputs.salesforce_sfdx_auth_url }}  ${{ inputs.subject }}  ${{ inputs.body }}  ${{ inputs.devopscenter_project_name }}  )"

@@ -22,4 +22,5 @@ runs:
     - name: Create issue
       shell: bash
       run: |
+        cd .github/workflows/sfdx-project
         sfdx data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='${{ inputs.subject }}'" -u devopscenter

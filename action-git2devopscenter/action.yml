@@ -9,7 +9,10 @@ inputs:
     required: true
   devopscenter_projectid:
     description: Salesforce projectid of the DevOps Center project
-    required: true
+    required: false
+  devopscenter_project_name:
+    description: Name of the DevOps Center project
+    required: false
 
 runs:
   using: "composite"
@@ -22,5 +25,6 @@ runs:
         echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
         sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
         rm -f ./sfdxauthurl.txt
-        #set projectid=`sfdx force:data:soql:query -q "SELECT Id FROM sf_devops__Project__c WHERE Name='${{ inputs.devopscenter_project_name }}'" --json | jq '.result.records[0].Id'`
-        sfdx force:data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='${{ inputs.subject }}' sf_devops__Project__c=${{ inputs.devopscenter_projectid }}"
+        projectid=`sfdx force:data:soql:query -q "SELECT Id FROM sf_devops__Project__c WHERE Name='${{ inputs.devopscenter_project_name }}'" --json | jq '.result.records[0].Id'`
+        #sfdx force:data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='${{ inputs.subject }}' sf_devops__Project__c=${{ inputs.devopscenter_projectid }}"
+        sfdx force:data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='${{ inputs.subject }}' sf_devops__Project__c=$(projectid)"

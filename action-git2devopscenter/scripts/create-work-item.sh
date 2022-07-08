@@ -16,17 +16,17 @@ sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout > /dev/null
 rm -f ./sfdxauthurl.txt
 
 # Recherche du projectid à pratir du projectname
-projectid=$(sfdx force:data:soql:query -q "SELECT Id FROM sf_devops__Project__c WHERE Name='$devopscenter_project_name'"                                                         --json | jq '.result.records[0].Id')
+projectid=$(sfdx force:data:soql:query -q "SELECT Id FROM sf_devops__Project__c WHERE Name='$devopscenter_project_name'"                                                         --json | jq -r '.result.records[0].Id')
 
 # Création du work item
-workitemid=$(sfdx force:data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='$subject' sf_devops__Project__c=$projectid sf_devops__Description__c='$body'" --json | jq '.result.id')
+workitemid=$(sfdx force:data:record:create -s sf_devops__Work_Item__c -v "sf_devops__Subject__c='$subject' sf_devops__Project__c='$projectid' sf_devops__Description__c='$body'" --json | jq -r '.result.id')
 # Exemple : workitemid='"a3N1i000000acNmEAI"'
 # On retire les ""
-workitemid=$(echo $workitemid | sed -r "s/\"+//g")
+#workitemid=$(echo $workitemid | sed -r "s/\"+//g")
 
 # Recherche du nom du work item
-workitemname=$(sfdx force:data:record:get -s sf_devops__Work_Item__c -i $workitemid                                                                                              --json | jq '.result.Name')
-workitemname=$(echo $workitemname | sed -r "s/\"+//g")
+workitemname=$(sfdx force:data:record:get -s sf_devops__Work_Item__c -i $workitemid                                                                                              --json | jq -r '.result.Name')
+#workitemname=$(echo $workitemname | sed -r "s/\"+//g")
 
 
 # Valeur renvoyée

@@ -2,9 +2,10 @@
 
 
 salesforce_sfdx_auth_url=$1
-subject=$2
-body=$3
-devopscenter_project_name=$4
+# Escapes the single quotes
+subject=$(                   echo "$2" | sed -e "s/\'/\\\'/g" )
+body=$(                      echo "$3" | sed -e "s/\'/\\\'/g" )
+devopscenter_project_name=$( echo "$4" | sed -e "s/\'/\\\'/g" )
 
 
 cd .github/workflows/sfdx-project

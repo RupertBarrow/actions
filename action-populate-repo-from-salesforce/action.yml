@@ -81,6 +81,11 @@ runs:
       #sfdx force:source:retrieve -x manifest/package.xml 
       #if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
 
+    - name: Run prettier
+      shell: bash
+      run: |
+        npm run prettier
+
     - name: Configure git settings
       shell: bash
       run: |

@@ -73,11 +73,19 @@ runs:
         sfdx force:config:set defaultusername=checkout
         rm -f ./sfdxauthurl.txt
 
-    - name: Retrieve source from Salesforce organization
+    - name: Retrieve source from Salesforce organization with input package.xml
+      if: ${{ ! inputs.package_xml }}
+      shell: bash
+      run: |
+        sfdx force:source:manifest:create --fromorg checkout -o manifest -n package-snapshot-fromorg.xml
+        sfdx force:source:retrieve -x manifest/package-snapshot-fromorg.xml
+
+    - name: Retrieve source from Salesforce organization with input package.xml
+      if: ${{ inputs.package_xml }}
       shell: bash
       run: |
         sfdx force:source:retrieve -x ${{ inputs.package_xml }}
-        
+
       #sfdx force:source:retrieve -x manifest/package.xml 
       #if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
 

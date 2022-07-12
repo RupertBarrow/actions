@@ -36,7 +36,7 @@ inputs:
     default: false
     required: false
   package_xml:
-    description: package.xml manifest file to use for checkout. Optional : if absent, the action retrieves metadata with '--fromorg' option.
+    description: package.xml manifest file to use for checkout. Optional; if absent, the action retrieves metadata with '--fromorg' option.
     default: manifest/package-snapshot.xml
     required: false
 

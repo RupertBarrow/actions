@@ -36,7 +36,7 @@ inputs:
     default: false
     required: false
   package_xml:
-    description: package.xml manifest file to use for checkout
+    description: package.xml manifest file to use for checkout. Optional : if absent, the action retrieves metadata with '--fromorg' option.
     default: manifest/package-snapshot.xml
     required: false
 
@@ -77,7 +77,7 @@ runs:
       if: ${{ ! inputs.package_xml }}
       shell: bash
       run: |
-        sfdx force:source:manifest:create --fromorg checkout -o manifest -n package-snapshot-fromorg.xml
+        sfdx force:source:manifest:create --fromorg=checkout -o manifest -n package-snapshot-fromorg.xml
         sfdx force:source:retrieve -x manifest/package-snapshot-fromorg.xml
 
     - name: Retrieve source from Salesforce organization with input package.xml

@@ -39,6 +39,11 @@ inputs:
     description: package.xml manifest file to use for checkout. Optional; if absent, the action retrieves metadata with '--fromorg' option.
     default: manifest/package-snapshot.xml
     required: false
+  timeout:
+    description: timeout duration (nb minutes, default 60) passed to the sfdx force:source:retrieve command
+    default: 60
+    required: false
+    
 
 runs:
   using: "composite"
@@ -78,13 +83,13 @@ runs:
       shell: bash
       run: |
         sfdx force:source:manifest:create --fromorg=checkout -o manifest -n package-snapshot-fromorg.xml
-        sfdx force:source:retrieve -x manifest/package-snapshot-fromorg.xml
+        sfdx force:source:retrieve -x manifest/package-snapshot-fromorg.xml -w ${{ inputs.timeout }}
 
     - name: Retrieve source from Salesforce organization with input package.xml
       if: ${{ inputs.package_xml }}
       shell: bash
       run: |
-        sfdx force:source:retrieve -x ${{ inputs.package_xml }}
+        sfdx force:source:retrieve -x ${{ inputs.package_xml }}  -w ${{ inputs.timeout }}
 
       #sfdx force:source:retrieve -x manifest/package.xml 
       #if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi

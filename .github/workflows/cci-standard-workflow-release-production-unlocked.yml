@@ -18,7 +18,7 @@ jobs:
     concurrency: packaging
     runs-on: ubuntu-latest
     steps:
-      - uses: RupertBarrow/release-production-unlocked@main
+      - uses: RupertBarrow/cumulus-release-production-unlocked@main
         with:
           dev-hub-auth-url: "${{ secrets.dev-hub-auth-url }}"
           cumulusci-version: "${{ inputs.cumulusci-version }}"

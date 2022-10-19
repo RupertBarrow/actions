@@ -1,0 +1,38 @@
+on:
+  workflow_call:
+    inputs:
+      cumulusci-version:
+        required: false
+        type: string
+      sfdx-version:
+        required: false
+        type: string
+    secrets:
+      dev-hub-auth-url:
+        required: True
+
+jobs:
+  upload-beta-release-2gp:
+    name: "Upload Beta Release - Unlocked"
+    environment: packaging
+    concurrency: packaging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: RupertBarrow/cumulus-release-beta-unlocked@main
+        with:
+          dev-hub-auth-url: "${{ secrets.dev-hub-auth-url }}"
+          cumulusci-version: "${{ inputs.cumulusci-version }}"
+          sfdx-version: "${{ inputs.sfdx-version }}"
+          org-name: "dev"
+#  beta-test:
+#    name: "Beta Test"
+#    needs:
+#      - upload-beta-release-2gp
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: cumulus-actions/beta-test@v1
+#        with:
+#          dev-hub-auth-url: "${{ secrets.dev-hub-auth-url }}"
+#          cumulusci-version: "${{ inputs.cumulusci-version }}"
+#          sfdx-version: "${{ inputs.sfdx-version }}"
+#          org-name: "beta"

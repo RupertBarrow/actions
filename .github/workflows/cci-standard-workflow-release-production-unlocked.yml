@@ -9,7 +9,8 @@ on:
         type: string
       org-name:
         description: 'Name of the scratch org config to use'
-        required: true
+        type: string
+        required: false
         default: release
     secrets:
       dev-hub-auth-url:

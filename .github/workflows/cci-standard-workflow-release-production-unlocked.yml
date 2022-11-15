@@ -7,6 +7,10 @@ on:
       sfdx-version:
         required: false
         type: string
+      org-name:
+        description: 'Name of the scratch org config to use'
+        required: true
+        default: release
     secrets:
       dev-hub-auth-url:
         required: True
@@ -23,6 +27,7 @@ jobs:
           dev-hub-auth-url: "${{ secrets.dev-hub-auth-url }}"
           cumulusci-version: "${{ inputs.cumulusci-version }}"
           sfdx-version: "${{ inputs.sfdx-version }}"
+          org-name: '${{ inputs.org-name }}'
 #  release-test:
 #    name: "Release Test"
 #    needs:

@@ -18,7 +18,7 @@ on:
         required: true
 
 jobs:
-  feature-test:
+  run-flow-scratch:
     name: "Run Flow in scratch org"
     runs-on: ubuntu-latest
     steps:

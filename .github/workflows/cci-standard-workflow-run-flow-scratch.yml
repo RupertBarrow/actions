@@ -5,9 +5,11 @@ on:
       cumulusci-version:
         required: false
         type: string
+        default: 3.69.0
       sfdx-version:
         required: false
         type: string
+        default: 7.175.0
       org-name:
         required: true
         type: string

@@ -16,10 +16,10 @@ on:
 
 jobs:
   feature-test:
-    name: "Feature Test"
+    name: "Run Flow in scratch org"
     runs-on: ubuntu-latest
     steps:
-      - uses: cumulus-actions/feature-test@v1
+      - uses: RupertBarrow/cumulus-action-run-flow-scratch@main
         with:
           dev-hub-auth-url: "${{ secrets.dev-hub-auth-url }}"
           cumulusci-version: "${{ inputs.cumulusci-version }}"

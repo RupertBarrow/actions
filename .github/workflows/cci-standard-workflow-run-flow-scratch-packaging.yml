@@ -1,0 +1,35 @@
+# Identical to cci-standard-workflow-run-flow-scratch.yml, but with environment=packaging and concurrency=packaging
+on:
+  workflow_call:
+    inputs:
+      cumulusci-version:
+        required: false
+        type: string
+      sfdx-version:
+        required: false
+        type: string
+      org-name:
+        required: true
+        type: string
+      flow-name:
+        required: true
+        type: string
+    secrets:
+      dev-hub-auth-url:
+        required: true
+
+jobs:
+  run-flow-scratch:
+    name: "Run Flow in scratch org with packaging"
+    environment: packaging
+    concurrency: packaging
+    runs-on: ubuntu-latest
+    steps:
+      #- uses: RupertBarrow/cumulus-action-run-flow-scratch@main
+      - uses: cumulus-actions/run-flow-scratch@v1
+        with:
+          dev-hub-auth-url: "${{ secrets.dev-hub-auth-url }}"
+          cumulusci-version: "${{ inputs.cumulusci-version }}"
+          sfdx-version: "${{ inputs.sfdx-version }}"
+          flow-name: "${{ inputs.flow-name }}"
+          org-name: "${{ inputs.org-name }}"

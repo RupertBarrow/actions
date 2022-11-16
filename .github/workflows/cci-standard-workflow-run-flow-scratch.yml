@@ -7,6 +7,9 @@ on:
       sfdx-version:
         required: false
         type: string
+      org-name:
+        required: true
+        type: string
       flow-name:
         required: true
         type: string
@@ -19,9 +22,11 @@ jobs:
     name: "Run Flow in scratch org"
     runs-on: ubuntu-latest
     steps:
-      - uses: RupertBarrow/cumulus-action-run-flow-scratch@main
+      #- uses: RupertBarrow/cumulus-action-run-flow-scratch@main
+      - uses: cumulus-actions/run-flow-scratch@v1
         with:
           dev-hub-auth-url: "${{ secrets.dev-hub-auth-url }}"
           cumulusci-version: "${{ inputs.cumulusci-version }}"
           sfdx-version: "${{ inputs.sfdx-version }}"
           flow-name: "${{ inputs.flow-name }}"
+          org-name: "${{ inputs.org-name }}"

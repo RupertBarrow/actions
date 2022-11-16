@@ -1,3 +1,4 @@
+# Remember to update also cci-standard-workflow-run-flow-scratch-packaging.yml
 on:
   workflow_call:
     inputs:

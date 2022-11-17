@@ -12,7 +12,7 @@ inputs:
     required: true
   org-name:
     description: 'Name of the scratch org or persistent org config to use'
-    required: true
+    required: false
   flow-name:
     description: 'Name of the Cumulus flow to execute'
     required: true

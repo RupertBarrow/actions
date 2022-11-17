@@ -17,6 +17,9 @@ on:
       flow-name:
         required: true
         type: string
+      flow-task-options:
+        required: false
+        type: string
     secrets:
       dev-hub-auth-url:
         required: true

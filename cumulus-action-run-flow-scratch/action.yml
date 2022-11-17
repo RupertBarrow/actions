@@ -32,42 +32,42 @@ inputs:
     required: false
     default:
 runs:
-    using: "composite"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set Up CumulusCI
-        uses: cumulus-actions/setup-cumulus@v1
-        with:
-          cumulusci-version: '${{ inputs.cumulusci-version }}'
-          sfdx-version: '${{ inputs.sfdx-version }}'
-      - name: Authorize Dev Hub
-        uses: cumulus-actions/authorize-org@v1
-        with:
-          auth-url: '${{ inputs.dev-hub-auth-url }}'
-          org-name: dev-hub
-          dev-hub: true
-      - name: Run Flow
-        uses: RupertBarrow/actions/run-flow@main
-        with:
-          org-name: '${{ inputs.org-name }}'
-          flow-name: '${{ inputs.flow-name }}'
-          flow-task-options: '${{ inputs.flow-task-options }}'
-      - name: Set Commit Status
-        if: ${{ inputs.commit-status-regex && inputs.commit-status-name }}
-        env:
-          GITHUB_TOKEN: '${{ github.token }}'
-        run: |
-          STATUS=$(cat cumulusci-flow.log | grep -o '${{ inputs.commit-status-regex }}')
-          gh api \
-            --method POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            '/repos/${{ github.repository }}/statuses/${{ github.sha }}' \
-            -f state='success' \
-            -f description="${{ inputs.commit-status-description-prefix }}$STATUS" \
-            -f context='${{ inputs.commit-status-name }}'
-        shell: bash
-      - name: Delete Scratch Org
-        if: ${{ always() }}
-        run: |
-          cci org scratch_delete '${{ inputs.org-name }}'
-        shell: bash
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+    - name: Set Up CumulusCI
+      uses: cumulus-actions/setup-cumulus@v1
+      with:
+        cumulusci-version: '${{ inputs.cumulusci-version }}'
+        sfdx-version: '${{ inputs.sfdx-version }}'
+    - name: Authorize Dev Hub
+      uses: cumulus-actions/authorize-org@v1
+      with:
+        auth-url: '${{ inputs.dev-hub-auth-url }}'
+        org-name: dev-hub
+        dev-hub: true
+    - name: Run Flow
+      uses: RupertBarrow/actions/run-flow@main
+      with:
+        org-name: '${{ inputs.org-name }}'
+        flow-name: '${{ inputs.flow-name }}'
+        flow-task-options: '${{ inputs.flow-task-options }}'
+    - name: Set Commit Status
+      if: ${{ inputs.commit-status-regex && inputs.commit-status-name }}
+      env:
+        GITHUB_TOKEN: '${{ github.token }}'
+      run: |
+        STATUS=$(cat cumulusci-flow.log | grep -o '${{ inputs.commit-status-regex }}')
+        gh api \
+          --method POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          '/repos/${{ github.repository }}/statuses/${{ github.sha }}' \
+          -f state='success' \
+          -f description="${{ inputs.commit-status-description-prefix }}$STATUS" \
+          -f context='${{ inputs.commit-status-name }}'
+      shell: bash
+    - name: Delete Scratch Org
+      if: ${{ always() }}
+      run: |
+        cci org scratch_delete '${{ inputs.org-name }}'
+      shell: bash

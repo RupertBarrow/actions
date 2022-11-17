@@ -35,4 +35,5 @@ jobs:
           cumulusci-version: "${{ inputs.cumulusci-version }}"
           sfdx-version: "${{ inputs.sfdx-version }}"
           flow-name: "${{ inputs.flow-name }}"
+          flow-task-options: "${{ inputs.flow-task-options }}"
           org-name: "${{ inputs.org-name }}"

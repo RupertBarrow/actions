@@ -15,7 +15,6 @@ runs:
   using: "composite"
   steps:
     - name: Run Flow (with options)
-      if: ${{ inputs.flow-task-options }} != null
       env:
         CUMULUSCI_SERVICE_github: '{"username": "${{ github.actor }}", "token": "${{ github.token }}", "email": "cci@github.actions" }'
       run: |

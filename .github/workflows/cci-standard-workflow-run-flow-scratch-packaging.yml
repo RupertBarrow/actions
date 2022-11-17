@@ -28,7 +28,7 @@ jobs:
     concurrency: packaging
     runs-on: ubuntu-latest
     steps:
-      - uses: RupertBarrow/actions/run-flow-scratch@main
+      - uses: RupertBarrow/cumulus-actions-run-flow-scratch@main
         with:
           dev-hub-auth-url: "${{ secrets.dev-hub-auth-url }}"
           cumulusci-version: "${{ inputs.cumulusci-version }}"

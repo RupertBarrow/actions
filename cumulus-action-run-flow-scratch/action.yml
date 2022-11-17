@@ -47,7 +47,7 @@ runs:
         org-name: dev-hub
         dev-hub: true
     - name: Run Flow
-      uses: RupertBarrow/cumulus-actions-run-flow@main
+      uses: RupertBarrow/cumulus-action-run-flow@main
       with:
         org-name: '${{ inputs.org-name }}'
         flow-name: '${{ inputs.flow-name }}'

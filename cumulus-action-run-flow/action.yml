@@ -8,14 +8,16 @@ inputs:
     description: 'Name of the Cumulus flow to execute'
     required: true
   flow-task-options:
-    description: 'Task options passed to the flow'
+    description: 'Task options passed to the flow (ex \'-o __task__option value\')'
     required: false
+    default: ''
 runs:
-    using: "composite"
-    steps:
-      - name: Run Flow
-        env:
-          CUMULUSCI_SERVICE_github: '{"username": "${{ github.actor }}", "token": "${{ github.token }}", "email": "cci@github.actions" }'
-        run: |
-          cci flow run ${{ inputs.flow-name }} --org ${{ inputs.org-name }} | tee cumulusci-flow.log
-        shell: bash
+  using: "composite"
+  steps:
+    - name: Run Flow (with options)
+      if: ${{ inputs.flow-task-options }} != null
+      env:
+        CUMULUSCI_SERVICE_github: '{"username": "${{ github.actor }}", "token": "${{ github.token }}", "email": "cci@github.actions" }'
+      run: |
+        cci flow run ${{ inputs.flow-name }} --org ${{ inputs.org-name }} ${{ inputs.flow-task-options }} | tee cumulusci-flow.log
+      shell: bash

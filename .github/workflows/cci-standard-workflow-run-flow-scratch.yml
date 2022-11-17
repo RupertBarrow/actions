@@ -11,7 +11,7 @@ on:
         type: string
         default: 7.175.0
       org-name:
-        required: true
+        required: false
         type: string
         default: dev
       flow-name:

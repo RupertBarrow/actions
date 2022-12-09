@@ -43,12 +43,10 @@ inputs:
     description: timeout duration (nb minutes, default 60) passed to the sfdx force:source:retrieve command
     default: 60
     required: false
-    
 
 runs:
   using: "composite"
-  steps:        
-        
+  steps:
     - name: Store SFDX auth URL
       shell: bash
       run: |
@@ -89,11 +87,11 @@ runs:
         sfdx force:source:retrieve -x ${{ inputs.package_xml }}  -w ${{ inputs.timeout }}
 
     - name: Run prettier to reformat files correctly
-        uses: creyD/prettier_action@v4.2
-        with:
-          config: .prettierrc
-          ignore-path: .prettierignore
-          #only_changed: True
+      uses: creyD/prettier_action@v4.2
+      with:
+        config: .prettierrc
+        ignore-path: .prettierignore
+        #only_changed: True
 
     - name: Configure git settings
       shell: bash

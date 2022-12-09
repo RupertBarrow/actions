@@ -54,9 +54,6 @@ runs:
       run: |
         echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
 
-#       if [   -z "${{inputs.salesforce_sfdx_auth_url}}" ]; the if [ ! -z "${{inputs.salesforce_security_token}}" ]; then (echo 'y' | sfdx plugins:install sfpowerkit; echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout; sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout) ; fi; fi
-#      if [   -z "${{inputs.salesforce_sfdx_auth_url}}" &&   -z "${{inputs.salesforce_security_token}}" ]; then (echo 'y' | sfdx plugins:install sfpowerkit; echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout; sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout) ; fi
-
     - name: Add SFDX Powerkit Plugin for login with username and password, including security token
       shell: bash
       run: |
@@ -78,25 +75,25 @@ runs:
         sfdx force:config:set defaultusername=checkout
         rm -f ./sfdxauthurl.txt
 
-    - name: Retrieve source from Salesforce organization with input package.xml
+    - name: Retrieve source from Salesforce organization after generation package.xml --fromorg
       if: ${{ ! inputs.package_xml }}
       shell: bash
       run: |
         sfdx force:source:manifest:create --fromorg=checkout -o manifest -n package-snapshot-fromorg.xml
         sfdx force:source:retrieve -x manifest/package-snapshot-fromorg.xml -w ${{ inputs.timeout }}
 
-    - name: Retrieve source from Salesforce organization with input package.xml
+    - name: Retrieve source from Salesforce organization WITH input package.xml
       if: ${{ inputs.package_xml }}
       shell: bash
       run: |
         sfdx force:source:retrieve -x ${{ inputs.package_xml }}  -w ${{ inputs.timeout }}
 
-      #sfdx force:source:retrieve -x manifest/package.xml 
-      #if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
-
-    #- name: Run prettier
-    #  shell: bash
-    #  run: npm run prettier
+    - name: Run prettier to reformat files correctly
+        uses: creyD/prettier_action@v4.2
+        with:
+          config: .prettierrc
+          ignore-path: .prettierignore
+          #only_changed: True
 
     - name: Configure git settings
       shell: bash

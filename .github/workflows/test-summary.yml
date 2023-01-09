@@ -6,6 +6,7 @@ jobs:
     name: "Create a test summary from test results"
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - uses: test-summary/action@v2
         with:
           paths: "reports/test-results.xml"

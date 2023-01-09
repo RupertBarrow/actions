@@ -1,7 +1,7 @@
 on:
   workflow_call:
 
-job:
+jobs:
   test_summary:
     name: Test Summary
     uses: test-summary/action@v2

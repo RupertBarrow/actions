@@ -12,8 +12,3 @@ jobs:
           paths: "reports/test_results.xml"
           output: "reports/README.md"
         if: always()
-      - uses: actions/upload-artifact@v3
-        with:
-          name: test-summary
-          path: reports/README.md
-        if: always()

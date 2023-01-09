@@ -20,7 +20,6 @@ inputs:
     flow-task-options:
       required: false
       type: string
-  secrets:
     dev-hub-auth-url:
       required: true
     cumulusci-service-github:

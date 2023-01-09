@@ -2,17 +2,16 @@ on:
   workflow_call:
 
 jobs:
-  test_summary:
-    name: Test Summary
-    uses: test-summary/action@v2
-    with:
-      paths: "reports/test-results.xml"
-    if: always()
-
-  upload_test_summary:
-    name: Upload test summary
-    uses: actions/upload-artifact@v3
-    with:
-      name: test-summary
-      path: reports/TESTS.md
-    if: always()
+  test-summary:
+    name: "Create a test summary from test results"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: test-summary/action@v2
+        with:
+          paths: "reports/test-results.xml"
+        if: always()
+      - uses: actions/upload-artifact@v3
+        with:
+          name: test-summary
+          path: reports/TESTS.md
+        if: always()

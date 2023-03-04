@@ -57,6 +57,7 @@ runs:
           console.log("data=", data)
           console.log("entries=", Object.entries(data))
 
+          /*
           let result = ''
           for(const [key, rows] of Object.entries(data)) {
           console.log('rows=', rows)
@@ -68,6 +69,7 @@ runs:
           }
 
           return XML_START + result + XML_END
+          */
 
     - name: Update package.xml file
       shell: bash

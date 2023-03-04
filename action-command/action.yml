@@ -1,4 +1,4 @@
-name: Populate Github repository from Salesforce org
+name: Run command
 
 # Salesforce login parameters.
 # Login with :
@@ -32,29 +32,10 @@ inputs:
     description: run this command (sfdx or other) in bash
     required: true
 
-  # Commit to Github
-  folder_to_commit:
-    description: Which folder should we commit to Git, default being .
-    default: .
-    required: false
-  do_commit:
-    description: Do you want to add, commit to git and push to Github ?
-    default: false
-    required: false
-  commit_message:
-    description: Commit message
-    default: "Added by Rapido automation"
-    required: false
-  github_token:
-    required: true
-
 runs:
   using: "composite"
-  #permissions:
-  #  contents: write
   steps:
     # NB : checkout on the branch must be done by the caller
-    # NB : caller must set "permissions: contents: write" if do_commit is set to true
 
     #################################################################################################################################
     # AUTHENTICATION
@@ -90,39 +71,7 @@ runs:
     # Run command (sfdx or other)
     #
 
-    - name: Run command
+    - name: Run command ${{ inputs.command }}
       shell: bash
       run: |
-        echo ${{ inputs.command }}
         ${{ inputs.command }}
-
-    #################################################################################################################################
-    # COMMIT to Github
-    #
-
-    - name: Configure git settings
-      if: inputs.do_commit
-      shell: bash
-      run: |
-        git config --global --add safe.directory `pwd`
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-
-    - name: git add ?
-      if: inputs.do_commit
-      shell: bash
-      run: git add ${{ inputs.folder_to_commit }}
-
-    - name: git commit ?
-      if: inputs.do_commit
-      shell: bash
-      run: git commit -m ${{ inputs.commit_message }}
-
-    - name: Push to Github
-      if: inputs.do_commit
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ inputs.github_token }}
-        directory: ${{ env.folder-to-commit }}
-        branch: ${{ github.ref }}
-        force: true

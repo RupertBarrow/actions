@@ -44,8 +44,29 @@ runs:
       with:
         result-encoding: string
         script: |
-          console.log("### ICI ###")
-          return "abc"
+          const API_VERSION = 56.0
+
+          const XML_START = `<?xml version="1.0" encoding="UTF-8"?>
+          <Package xmlns="http://soap.sforce.com/2006/04/metadata">`
+
+          const XML_END = `
+            <version>${API_VERSION}</version>
+          </Package>`
+
+          const data = ${{ github.event.inputs.contents }}
+          console.log('data=', data)
+
+          let result = ''
+          for(const [key, rows] of Object.entries(data)) {
+          console.log('rows=', rows)
+            result += rows.map(row=>`
+            <types>
+              <members>${row.name}</members>
+              <name>${key}</name>
+            </types>`).join('')
+          }
+
+          return XML_START + result + XML_END
 
     - name: Update package.xml file
       shell: bash
@@ -79,27 +100,3 @@ runs:
         directory: ${{ env.folder-to-commit }}
         branch: ${{ github.ref }}
         force: true
-
-    # const API_VERSION = 56.0
-
-    # const XML_START = `<?xml version="1.0" encoding="UTF-8"?>
-    # <Package xmlns="http://soap.sforce.com/2006/04/metadata">`
-
-    # const XML_END = `
-    #   <version>${API_VERSION}</version>
-    # </Package>`
-
-    # const data = ${{ github.event.inputs.contents }}
-    # console.log('data=', data)
-
-    # let result = ''
-    # for(const [key, rows] of Object.entries(data)) {
-    # console.log('rows=', rows)
-    #   result += rows.map(row=>`
-    #   <types>
-    #     <members>${row.name}</members>
-    #     <name>${key}</name>
-    #   </types>`).join('')
-    # }
-
-    # return XML_START + result + XML_END

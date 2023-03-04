@@ -38,42 +38,42 @@ runs:
     # GENERATE package.xml
     #
 
-      - name: Generate package.xml content
-        id: generate-xml
-        uses: actions/github-script@v6
-        with:
-          result-encoding: string
-          script: |
-            const API_VERSION = 56.0
+    - name: Generate package.xml content
+      id: generate-xml
+      uses: actions/github-script@v6
+      with:
+        result-encoding: string
+        script: |
+          const API_VERSION = 56.0
 
-            const XML_START = `<?xml version="1.0" encoding="UTF-8"?>
-            <Package xmlns="http://soap.sforce.com/2006/04/metadata">`
+          const XML_START = `<?xml version="1.0" encoding="UTF-8"?>
+          <Package xmlns="http://soap.sforce.com/2006/04/metadata">`
 
-            const XML_END = `
-              <version>${API_VERSION}</version>
-            </Package>`
+          const XML_END = `
+            <version>${API_VERSION}</version>
+          </Package>`
 
-            const data = ${{ github.event.inputs.contents }}
-            console.log('data=', data)
+          const data = ${{ github.event.inputs.contents }}
+          console.log('data=', data)
 
-            let result = ''
-            for(const [key, rows] of Object.entries(data)) {
-            console.log('rows=', rows)
-              result += rows.map(row=>`
-              <types>
-                <members>${row.name}</members>
-                <name>${key}</name>
-              </types>`).join('')
-            }
+          let result = ''
+          for(const [key, rows] of Object.entries(data)) {
+          console.log('rows=', rows)
+            result += rows.map(row=>`
+            <types>
+              <members>${row.name}</members>
+              <name>${key}</name>
+            </types>`).join('')
+          }
 
-            return XML_START + result + XML_END
-      
-      - name: Update package.xml file
-        shell: bash
-        run: |
-          echo '${{steps.generate-xml.outputs.result}}'
-          echo '${{steps.generate-xml.outputs.result}}' > ${{ github.event.inputs.path }}
-        
+          return XML_START + result + XML_END
+
+    - name: Update package.xml file
+      shell: bash
+      run: |
+        echo '${{steps.generate-xml.outputs.result}}'
+        echo '${{steps.generate-xml.outputs.result}}' > ${{ github.event.inputs.path }}
+
     #################################################################################################################################
     # COMMIT and push to Github
     #

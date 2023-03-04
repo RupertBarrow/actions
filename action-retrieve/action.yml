@@ -52,11 +52,13 @@ inputs:
     description: Do you want to git commit ?
     default: false
     required: false
+  github_token:
+    required: true
 
 runs:
   using: "composite"
-  permissions:
-    contents: write
+  #permissions:
+  #  contents: write
   steps:
     # NB : checkout on the branch must be done by the caller
 
@@ -121,7 +123,7 @@ runs:
     - name: Push to Github
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ inputs.github_token }}
         directory: ${{ env.folder-to-commit }}
         branch: ${{ github.ref }}
         force: true

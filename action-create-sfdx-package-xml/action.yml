@@ -21,10 +21,6 @@ inputs:
     description: Which folder should we commit to Git, default being .
     default: .
     required: false
-  do_commit:
-    description: Do you want to add, commit to git and push to Github ?
-    default: false
-    required: false
   commit_message:
     description: Commit message
     default: "Added by Rapido automation"
@@ -83,7 +79,6 @@ runs:
     #
 
     - name: Configure git settings
-      if: inputs.do_commit
       shell: bash
       run: |
         git config --global --add safe.directory `pwd`
@@ -91,17 +86,14 @@ runs:
         git config --local user.name "GitHub Action"
 
     - name: git add ?
-      if: inputs.do_commit
       shell: bash
       run: git add ${{ inputs.folder_to_commit }}
 
     - name: git commit ?
-      if: inputs.do_commit
       shell: bash
       run: git commit -m ${{ inputs.commit_message }}
 
     - name: Push to Github
-      if: inputs.do_commit
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ inputs.github_token }}

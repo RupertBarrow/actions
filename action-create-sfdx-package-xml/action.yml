@@ -53,7 +53,7 @@ runs:
             <version>${API_VERSION}</version>
           </Package>`
 
-          //const data = ${{ github.event.inputs.contents }}
+          const data = "${{ github.event.inputs.contents }}"
           //console.log("data=", data)
           //console.log("entries=", Object.entries(data))
 

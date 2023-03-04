@@ -8,6 +8,7 @@ name: Populate Github repository from Salesforce org
 # - (tbc : or with salesforce_accesstoken)
 
 inputs:
+  # Authentication
   salesforce_url:
     description: Salesforce org url (best with mydomain.my.salesforce.com, mydomain-dev-ed.my.salesforce ou mydomain--mysandbvox.my.salesforce.com
     required: false
@@ -30,12 +31,12 @@ inputs:
     required: false
     default: "main"
 
-  # Retrieve from Salesforce
-  retrieve_command_options:
+  # SFDX command
+  sfdx_command:
     description: options for the "sfdx force:source:retrieve" command
     required: true
 
-  # Commit
+  # Commit to Github
   folder_to_commit:
     description: Which folder should we commit to Git, default being .
     default: .
@@ -57,6 +58,7 @@ runs:
   #  contents: write
   steps:
     # NB : checkout on the branch must be done by the caller
+    # NB : caller must set "permissions: contents: write" if do_git_commit is set to true
 
     #################################################################################################################################
     # AUTHENTICATION
@@ -67,7 +69,7 @@ runs:
       run: |
         echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
 
-    - name: Add SFDX Powerkit Plugin for login with username and password, including security token
+    - name: Authenticate
       shell: bash
       run: |
         if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
@@ -89,19 +91,20 @@ runs:
         rm -f ./sfdxauthurl.txt
 
     #################################################################################################################################
-    # RETRIEVE from Salesforce org
+    # Run SFDX command
     #
 
-    - name: Deploy to Salesforce destination org
+    - name: Retrieve from Salesforce org
       shell: bash
       run: |
-        sfdx force:source:deploy ${{ inputs.retrieve_command_options }}
+        ${{ inputs.sfdx_command }}
 
     #################################################################################################################################
     # COMMIT to Github
     #
 
     - name: Configure git settings
+      if: ${{ inputs.do_git_commit }}
       shell: bash
       run: |
         git config --global --add safe.directory `pwd`
@@ -109,14 +112,17 @@ runs:
         git config --local user.name "GitHub Action"
 
     - name: git add ?
+      if: ${{ inputs.do_git_add }}
       shell: bash
-      run: ( ${{ inputs.do_git_add }} && git add ${{ inputs.folder_to_commit }} )  || true
+      run: git add ${{ inputs.folder_to_commit }}
 
     - name: git commit ?
+      if: ${{ inputs.do_git_commit }}
       shell: bash
-      run: ( ${{ inputs.do_git_commit }} && git commit -m "Updated from Salesforce" )  || true
+      run: git commit -m "Updated from Salesforce"
 
     - name: Push to Github
+      if: ${{ inputs.do_git_commit }}
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ inputs.github_token }}

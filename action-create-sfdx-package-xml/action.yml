@@ -54,12 +54,12 @@ runs:
           </Package>`
 
           const data = ${{ inputs.contents }}
-          console.log("data=", data)
-          console.log("entries=", Object.entries(data))
+          //console.log("data=", data)
+          //console.log("entries=", Object.entries(data))
 
           let result = ''
           for(const [key, rows] of Object.entries(data)) {
-          console.log('rows=', rows)
+          //console.log('rows=', rows)
             result += rows.map(row=>`
             <types>
               <members>${row.name}</members>

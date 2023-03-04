@@ -16,18 +16,6 @@ inputs:
     description: Path to the file, eg manifest/package.xml
     required: true
 
-  # Commit to Github
-  folder_to_commit:
-    description: Which folder should we commit to Git, default being .
-    default: .
-    required: false
-  commit_message:
-    description: Commit message
-    default: "Added by Rapido automation"
-    required: false
-  github_token:
-    required: true
-
 runs:
   using: "composite"
   steps:
@@ -74,30 +62,3 @@ runs:
       run: |
         echo '${{steps.generate-xml.outputs.result}}'
         echo '${{steps.generate-xml.outputs.result}}' > ${{ inputs.path }}
-
-    #################################################################################################################################
-    # COMMIT and push to Github
-    #
-
-    - name: Configure git settings
-      shell: bash
-      run: |
-        git config --global --add safe.directory `pwd`
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-
-    - name: git add ?
-      shell: bash
-      run: git add ${{ inputs.folder_to_commit }}
-
-    - name: git commit ?
-      shell: bash
-      run: git commit -m "${{ inputs.commit_message }}"
-
-    - name: Push to Github
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ inputs.github_token }}
-        directory: ${{ env.folder-to-commit }}
-        branch: ${{ github.ref }}
-        force: true

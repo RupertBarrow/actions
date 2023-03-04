@@ -54,7 +54,8 @@ runs:
           </Package>`
 
           const data = ${{ github.event.inputs.contents }}
-          console.log('data=', data)
+          console.log("data=", data)
+          console.log("entries=", Object.entries(data))
 
           let result = ''
           for(const [key, rows] of Object.entries(data)) {

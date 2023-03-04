@@ -70,7 +70,7 @@ runs:
 
     - name: git commit ?
       shell: bash
-      run: git commit -m ${{ inputs.commit_message }}
+      run: git commit -m "${{ inputs.commit_message }}"
 
     - name: Push to Github
       uses: ad-m/github-push-action@master

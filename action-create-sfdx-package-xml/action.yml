@@ -53,11 +53,10 @@ runs:
             <version>${API_VERSION}</version>
           </Package>`
 
-          const data = "${{ github.event.inputs.contents }}"
+          const data = "${{ inputs.contents }}"
           console.log("data=", data)
-          //console.log("entries=", Object.entries(data))
+          console.log("entries=", Object.entries(data))
 
-          /*
           let result = ''
           for(const [key, rows] of Object.entries(data)) {
           console.log('rows=', rows)
@@ -69,13 +68,12 @@ runs:
           }
 
           return XML_START + result + XML_END
-          */
 
     - name: Update package.xml file
       shell: bash
       run: |
         echo '${{steps.generate-xml.outputs.result}}'
-        echo '${{steps.generate-xml.outputs.result}}' > ${{ github.event.inputs.path }}
+        echo '${{steps.generate-xml.outputs.result}}' > ${{ inputs.path }}
 
     #################################################################################################################################
     # COMMIT and push to Github

@@ -53,7 +53,7 @@ runs:
             <version>${API_VERSION}</version>
           </Package>`
 
-          const data = "${{ inputs.contents }}"
+          const data = ${{ inputs.contents }}
           console.log("data=", data)
           console.log("entries=", Object.entries(data))
 

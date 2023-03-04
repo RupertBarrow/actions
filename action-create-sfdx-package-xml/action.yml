@@ -53,9 +53,9 @@ runs:
             <version>${API_VERSION}</version>
           </Package>`
 
-          const data = ${{ github.event.inputs.contents }}
-          console.log("data=", data)
-          console.log("entries=", Object.entries(data))
+          //const data = ${{ github.event.inputs.contents }}
+          //console.log("data=", data)
+          //console.log("entries=", Object.entries(data))
 
           /*
           let result = ''

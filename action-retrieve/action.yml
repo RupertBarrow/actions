@@ -31,10 +31,6 @@ inputs:
     default: "main"
 
   # Retrieve from Salesforce
-  timeout:
-    description: timeout duration (nb minutes, default 60) passed to the sfdx force:source:retrieve command
-    default: 60
-    required: false
   retrieve_command_options:
     description: options for the "sfdx force:source:retrieve" command
     required: true
@@ -99,7 +95,7 @@ runs:
     - name: Deploy to Salesforce destination org
       shell: bash
       run: |
-        sfdx force:source:deploy ${{ inputs.deploy_command_options }} -w ${{ inputs.timeout }}
+        sfdx force:source:deploy ${{ inputs.retrieve_command_options }}
 
     #################################################################################################################################
     # COMMIT to Github

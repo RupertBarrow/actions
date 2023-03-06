@@ -61,4 +61,4 @@ runs:
       shell: bash
       run: |
         echo '${{steps.generate-xml.outputs.result}}'
-        echo '${{steps.generate-xml.outputs.result}}' > ${{ inputs.path }}
+        echo '${{steps.generate-xml.outputs.result}}' > "${{ inputs.path }}"

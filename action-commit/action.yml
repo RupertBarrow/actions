@@ -31,13 +31,13 @@ runs:
         git config --global --add safe.directory `pwd`
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add ${{ inputs.folder_to_commit }}
+        git add "${{ inputs.folder_to_commit }}"
         git commit --allow-empty -m "${{ inputs.commit_message }}"
 
     - name: Push to Github
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ inputs.github_token }}
-        directory: ${{ env.folder-to-commit }}
+        directory: "${{ env.folder-to-commit }}"
         branch: ${{ github.ref }}
         force: true

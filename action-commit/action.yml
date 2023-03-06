@@ -32,7 +32,7 @@ runs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add ${{ inputs.folder_to_commit }}
-        git commit -m "${{ inputs.commit_message }}"
+        git commit --allow-empty -m "${{ inputs.commit_message }}"
 
     - name: Push to Github
       uses: ad-m/github-push-action@master

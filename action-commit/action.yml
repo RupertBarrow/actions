@@ -1,0 +1,43 @@
+name: Commit to Github
+
+inputs:
+  # NB : checkout on the branch must be done by the caller
+
+  # Commit to Github
+  folder_to_commit:
+    description: Which folder should we commit to Git, default being .
+    default: .
+    required: false
+  commit_message:
+    description: Commit message
+    default: "Added by Rapido automation"
+    required: false
+  github_token:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    # NB : checkout on the branch must be done by the caller
+    # NB : caller must set "permissions: contents: write"
+
+    #################################################################################################################################
+    # COMMIT to Github
+    #
+
+    - name: Commit
+      shell: bash
+      run: |
+        git config --global --add safe.directory `pwd`
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add "${{ inputs.folder_to_commit }}"
+        git commit --allow-empty -m "${{ inputs.commit_message }}"
+
+    - name: Push to Github
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ inputs.github_token }}
+        directory: "${{ env.folder-to-commit }}"
+        branch: ${{ github.ref }}
+        force: true

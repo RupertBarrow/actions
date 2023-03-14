@@ -1,4 +1,4 @@
-name: Populate Github repository from Salesforce org
+name: Deploy from Github to Salesforce org
 
 # Salesforce login parameters.
 # Login with :
@@ -43,21 +43,16 @@ inputs:
     description: timeout duration (nb minutes, default 60) passed to the sfdx force:source:retrieve command
     default: 60
     required: false
-    
 
 runs:
   using: "composite"
-  steps:        
-        
+  steps:
     - name: Store SFDX auth URL
       shell: bash
       run: |
         echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
 
-#       if [   -z "${{inputs.salesforce_sfdx_auth_url}}" ]; the if [ ! -z "${{inputs.salesforce_security_token}}" ]; then (echo 'y' | sfdx plugins:install sfpowerkit; echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout; sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout) ; fi; fi
-#      if [   -z "${{inputs.salesforce_sfdx_auth_url}}" &&   -z "${{inputs.salesforce_security_token}}" ]; then (echo 'y' | sfdx plugins:install sfpowerkit; echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout; sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout) ; fi
-
-    - name: Add SFDX Powerkit Plugin for login with username and password, including security token
+    - name: Authenticate
       shell: bash
       run: |
         if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
@@ -90,13 +85,6 @@ runs:
       shell: bash
       run: |
         sfdx force:source:retrieve -x ${{ inputs.package_xml }}  -w ${{ inputs.timeout }}
-
-      #sfdx force:source:retrieve -x manifest/package.xml 
-      #if [ -d ./force-app/main/default/staticresources ]; then cd ./force-app/main/default/staticresources; find . -name .git -type d -exec rm -rf {} \; || true ; cd ../../../../; fi
-
-    #- name: Run prettier
-    #  shell: bash
-    #  run: npm run prettier
 
     - name: Configure git settings
       shell: bash

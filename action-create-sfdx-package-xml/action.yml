@@ -60,5 +60,5 @@ runs:
     - name: Update package.xml file
       shell: bash
       run: |
-        mkdir -p dirname "${{ inputs.path }}"
+        mkdir -p `dirname "${{ inputs.path }}"
         echo '${{steps.generate-xml.outputs.result}}' > "${{ inputs.path }}"

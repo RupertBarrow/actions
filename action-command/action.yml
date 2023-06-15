@@ -51,7 +51,7 @@ runs:
       run: |
         if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
         then
-          echo 'y' | sfdx plugins:install sfpowerkit
+          echo 'y' | sfdx plugins add sfpowerkit
           if [ -z "${{ inputs.salesforce_security_token }}" ]
           then
             echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
@@ -61,10 +61,10 @@ runs:
             sfdx      sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
           fi
         else
-          echo sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
-          sfdx force:auth:sfdxurl:store -f ./sfdxauthurl.txt -s -a checkout
+          echo sfdx auth sfdxurl store -f ./sfdxauthurl.txt -s -a checkout
+          sfdx auth sfdxurl store -f ./sfdxauthurl.txt -s -a checkout
         fi
-        sfdx force:config:set defaultusername=checkout
+        sfdx config set defaultusername=checkout
         rm -f ./sfdxauthurl.txt
 
     #################################################################################################################################

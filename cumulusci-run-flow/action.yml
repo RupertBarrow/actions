@@ -1,0 +1,39 @@
+name: Run CumulusCI Flow
+
+inputs:
+  inputs:
+    cumulusci-version:
+      required: false
+      type: string
+      default: 3.70.0
+    sfdx-version:
+      required: false
+      type: string
+      default: 7.182.1
+    org-name:
+      required: false
+      type: string
+      default: dev
+    flow-name:
+      required: true
+      type: string
+    flow-task-options:
+      required: false
+      type: string
+    dev-hub-auth-url:
+      required: true
+    cumulusci-service-github:
+      required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: RupertBarrow/cumulus-action-run-flow-scratch@main
+      with:
+        dev-hub-auth-url: "${{ secrets.dev-hub-auth-url }}"
+        cumulusci-service-github: "${{ secrets.cumulusci-service-github }}"
+        cumulusci-version: "${{ inputs.cumulusci-version }}"
+        sfdx-version: "${{ inputs.sfdx-version }}"
+        flow-name: "${{ inputs.flow-name }}"
+        flow-task-options: "${{ inputs.flow-task-options }}"
+        org-name: "${{ inputs.org-name }}"

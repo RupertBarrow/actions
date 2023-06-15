@@ -1,0 +1,14 @@
+on:
+  workflow_call:
+
+jobs:
+  test-summary:
+    name: "Create a test summary from test results"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: test-summary/action@v2
+        with:
+          paths: "reports/test_results.xml"
+          output: "reports/README.md"
+        if: always()

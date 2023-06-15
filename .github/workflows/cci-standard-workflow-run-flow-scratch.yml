@@ -28,7 +28,7 @@ on:
 
 jobs:
   run-flow-scratch:
-    name: "Run Flow in scratch org"
+    # Run Flow in scratch org
     runs-on: ubuntu-latest
     steps:
       - uses: RupertBarrow/cumulus-action-run-flow-scratch@main

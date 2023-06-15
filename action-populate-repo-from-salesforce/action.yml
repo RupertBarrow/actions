@@ -48,19 +48,19 @@ runs:
   using: "composite"
   steps:
     # Retrieve source from Salesforce organization with input package.xml
-    - uses: RupertBarrow/action-command@main
+        uses: RupertBarrow/actions/action-command@v3
       if: ${{ ! inputs.package_xml }}
       with:
         salesforce_sfdx_auth_url: "${{ inputs.salesforce_sfdx_auth_url }}"
         command: sfdx force:source:manifest:create --fromorg=checkout -o manifest -n package-snapshot-fromorg.xml
-    - uses: RupertBarrow/action-command@main
+        uses: RupertBarrow/actions/action-command@v3
       if: ${{ ! inputs.package_xml }}
       with:
         salesforce_sfdx_auth_url: "${{ inputs.salesforce_sfdx_auth_url }}"
         command: sfdx force:source:retrieve -x manifest/package-snapshot-fromorg.xml -w ${{ inputs.timeout }}
 
     # Retrieve source from Salesforce organization with input package.xml
-    - uses: RupertBarrow/action-command@main
+        uses: RupertBarrow/actions/action-command@v3
       if: ${{ inputs.package_xml }}
       with:
         salesforce_sfdx_auth_url: "${{ inputs.salesforce_sfdx_auth_url }}"

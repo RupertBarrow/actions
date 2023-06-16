@@ -68,13 +68,8 @@ runs:
     #    #command: sfdx force:source:retrieve -x ${{ inputs.package_xml }}  -w ${{ inputs.timeout }}
     #    command: sfdx project retrieve start -x ${{ inputs.package_xml }}  -w ${{ inputs.timeout }}
 
-    # see https://github.com/creyD/prettier_action
-    - name: Install npm v8
-      shell: bash
-      run: npm i -g npm@8
-
     - name: Prettify code
-      uses: creyD/prettier_action@v4.3
+      uses: creyD/prettier_action@v3.3
       with:
         prettier_options: --write 'force-app/**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}'
         prettier_plugins: "prettier-plugin-sf-xml"

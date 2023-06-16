@@ -70,6 +70,7 @@ runs:
 
     # see https://github.com/creyD/prettier_action
     - name: Install npm v8
+      shell: bash
       run: npm i -g npm@8
 
     - name: Prettify code

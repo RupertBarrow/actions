@@ -26,6 +26,10 @@ inputs:
   salesforce_sfdx_auth_url:
     description: Salesforce SFDX auth URL
     required: false
+  debug:
+    description: Debug command by asking "set -x" to shell
+    default: false
+    required: false
 
   # command
   command:
@@ -74,4 +78,5 @@ runs:
     - name: Run command ${{ inputs.command }}
       shell: bash
       run: |
+        if [ ${{ inputs.debug }} ]; then set -x; fi
         ${{ inputs.command }}

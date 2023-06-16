@@ -69,19 +69,30 @@ runs:
 
     - name: Prettify code
       shell: bash
-      run: npm install --save-dev prettier prettier-plugin-sf-xml && ./node_modules/.bin/prettier --write 'force-app/**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}'
+      run: |
+        set -x
+        npm install --save-dev prettier prettier-plugin-sf-xml
+        ./node_modules/.bin/prettier --write 'force-app/**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}'
+        echo "##### Prettify - done #####"
 
     - name: Configure git settings
       shell: bash
       run: |
+        set -x
         git config --global --add safe.directory `pwd`
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
 
     - name: git add ?
       shell: bash
-      run: ( ${{ inputs.do_git_add }} && git add ${{ inputs.folder_to_commit }} )  || true
+      run: |
+        set -x
+        ( ${{ inputs.do_git_add }} && git add ${{ inputs.folder_to_commit }} )  || true
+        echo "##### git add - done #####"
 
     - name: git commit ?
       shell: bash
-      run: ( ${{ inputs.do_git_commit }} && git commit -m "Updated from Salesforce" )  || true
+      run: |
+        set -x
+        ( ${{ inputs.do_git_commit }} && git commit -m "Updated from Salesforce" )  || true
+        echo "##### git commit - done #####"

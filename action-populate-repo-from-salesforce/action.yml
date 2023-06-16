@@ -69,10 +69,8 @@ runs:
     #    command: sfdx project retrieve start -x ${{ inputs.package_xml }}  -w ${{ inputs.timeout }}
 
     - name: Prettify code
-      uses: creyD/prettier_action@v3.3
-      with:
-        prettier_options: --write 'force-app/**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}'
-        prettier_plugins: "prettier-plugin-sf-xml"
+      shell: bash
+      run: npm install --save-dev prettier prettier-plugin-sf-xml && ./node_modules/.bin/prettier --write 'force-app/**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}'
 
     - name: Configure git settings
       shell: bash

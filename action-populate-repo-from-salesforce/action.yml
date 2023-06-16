@@ -37,7 +37,6 @@ inputs:
     required: false
   package_xml:
     description: package.xml manifest file to use for checkout. Optional; if absent, the action retrieves metadata with '--fromorg' option.
-    default: manifest/package-snapshot.xml
     required: false
   timeout:
     description: timeout duration (nb minutes, default 60) passed to the sfdx force:source:retrieve command

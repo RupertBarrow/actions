@@ -47,18 +47,18 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Retrieve source from Salesforce organization without input package.xml
-      uses: RupertBarrow/actions/action-command@v3
-      if: ${{ ! inputs.package_xml }}
-      with:
-        salesforce_sfdx_auth_url: "${{ inputs.salesforce_sfdx_auth_url }}"
-        command: sfdx force:source:manifest:create --from-org=checkout --output-dir manifest -n package-snapshot-fromorg.xml && sfdx project retrieve start -x manifest/package-snapshot-fromorg.xml -w ${{ inputs.timeout }}
-    #- uses: RupertBarrow/actions/action-command@v3
+    #- name: Retrieve source from Salesforce organization without input package.xml
+    #  uses: RupertBarrow/actions/action-command@v3
     #  if: ${{ ! inputs.package_xml }}
     #  with:
     #    salesforce_sfdx_auth_url: "${{ inputs.salesforce_sfdx_auth_url }}"
-    #    #command: sfdx force:source:retrieve -x manifest/package-snapshot-fromorg.xml -w ${{ inputs.timeout }}
-    #    command: sfdx project retrieve start -x manifest/package-snapshot-fromorg.xml -w ${{ inputs.timeout }}
+    #    command: sfdx force:source:manifest:create --from-org=checkout --output-dir manifest -n package-snapshot-fromorg.xml && sfdx project retrieve start -x manifest/package-snapshot-fromorg.xml -w ${{ inputs.timeout }}
+    ##- uses: RupertBarrow/actions/action-command@v3
+    ##  if: ${{ ! inputs.package_xml }}
+    ##  with:
+    ##    salesforce_sfdx_auth_url: "${{ inputs.salesforce_sfdx_auth_url }}"
+    ##    #command: sfdx force:source:retrieve -x manifest/package-snapshot-fromorg.xml -w ${{ inputs.timeout }}
+    ##    command: sfdx project retrieve start -x manifest/package-snapshot-fromorg.xml -w ${{ inputs.timeout }}
 
     #- name: Retrieve source from Salesforce organization with input package.xml
     #  uses: RupertBarrow/actions/action-command@v3

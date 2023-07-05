@@ -21,7 +21,7 @@ env:
   MAIN_BRANCH: main
   UAT_BRANCH: uat
   INTEG_BRANCH: integ
-  FEATURE_BRANCH_PREFIX: "WI-"
+  FEATURE_BRANCH_PREFIX: "origin/WI-"
 
 permissions:
   contents: write # so it can comment
@@ -45,9 +45,11 @@ jobs:
         # list all branches, filtering for 'WI-', and cutting off remotes/origin/
         # then finally substitute newlines for spaces, excluding from the list the source branch which triggered the action
         run: |
-          branches=$(git branch --list --all | grep 'origin/$FEATURE_BRANCH_PREFIX' | cut -c 18- | while read -r line
+          branches=$(git branch --list --all | grep "$FEATURE_BRANCH_PREFIX" | cut -c 18- | while read -r line
           do
-            if [ "$line" != "$GITHUB_REF_NAME" ]
+            # in case of commit : if found branch is not the one we are committing on (GITHUB_REF_NAME)
+            # in case of pull request : if found branch is not the one we are pulling from (GITHUB_HEAD_REF)
+            if [ "$line" != "$GITHUB_REF_NAME" ] && [ "$line" != "$GITHUB_HEAD_REF" ]
             then
               echo \"$line\"","
             fi
@@ -93,6 +95,7 @@ jobs:
         with:
           # Fetch all branches
           fetch-depth: 0
+
       - name: Backport from source to target branch(es)
         id: pr
         uses: cristiammercado/cm-backport-pr@1.0.0

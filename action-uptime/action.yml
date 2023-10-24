@@ -1,0 +1,21 @@
+name: 'Uptime Action'
+description: 'Ping an URL and check HTTP status code'
+inputs:
+  url-to-hit:
+    description: 'which url to hit'
+    required: true
+  expected-statuses:
+    description: 'which http response statuses are expected'
+    required: false
+    default: "200"
+  user-agent-to-use:
+    description: 'User agent to use while sending the request'
+    required: false
+    default: ''
+
+outputs:
+  status: # id of output
+    description: 'The http status we got'
+runs:
+  using: 'node20'
+  main: 'index.js'

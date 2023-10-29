@@ -26,6 +26,12 @@ inputs:
   salesforce_sfdx_auth_url:
     description: Salesforce SFDX auth URL
     required: false
+  use_sf:
+    description: Use only Salesforce SF CLI, not SFDX CLI (default: true). Set this or use_sfdx, not both.
+    required: true
+  use_sfdx:
+    description: Use only Salesforce SFDX CLI, not SF CLI (default: false). Set this or use_sf, not both.
+    required: false
 
   # command
   command:
@@ -46,7 +52,8 @@ runs:
       run: |
         echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
 
-    - name: Authenticate
+    - name: Authenticate with SFDX
+      if: ${{ inputs.use_sfdx == 'true'}} && ${{ inputs.use_sf == 'false'}}
       shell: bash
       run: |
         if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
@@ -66,6 +73,29 @@ runs:
         fi
         sfdx config set defaultusername=checkout
         rm -f ./sfdxauthurl.txt
+
+    - name: Authenticate with SF
+      if: ${{ inputs.use_sf == 'true'}} && ${{ inputs.use_sfdx == 'false'}}
+      shell: bash
+      run: |
+        if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
+        then
+          echo "ERROR : Salesforce DX auth url is mandatory"
+          exit 1
+        else
+          echo sf org login sfdx-url -f ./sfdxauthurl.txt -s -a checkout
+          sf org login sfdx-url -f ./sfdxauthurl.txt -s -a checkout
+        fi
+        sf config set defaultusername=checkout
+        rm -f ./sfdxauthurl.txt
+
+    - name: Should not set use_sf and use_sfdx
+      if: ${{ inputs.use_sfdx == 'true'}} && ${{ inputs.use_sf == 'true'}}
+      shell: bash
+      run: |
+        echo "ERROR : You cannot set both 'use_sf' and 'use_sfdx' to true"
+        exit 1
+
 
     #################################################################################################################################
     # Run command (sfdx or other)

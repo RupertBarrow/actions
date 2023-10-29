@@ -56,6 +56,7 @@ runs:
       if: ${{ inputs.use_sfdx }} && !${{ inputs.use_sf }}
       shell: bash
       run: |
+        echo "USING SFDX"
         if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
         then
           echo 'y' | sfdx plugins add sfpowerkit
@@ -78,6 +79,7 @@ runs:
       if: ${{ inputs.use_sf }} && !${{ inputs.use_sfdx }}
       shell: bash
       run: |
+        echo "USING SF"
         if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
         then
           echo "ERROR : Salesforce DX auth url is mandatory"

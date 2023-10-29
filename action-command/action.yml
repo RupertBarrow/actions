@@ -27,10 +27,10 @@ inputs:
     description: Salesforce SFDX auth URL
     required: false
   use_sf:
-    description: Use only Salesforce SF CLI, not SFDX CLI (default: true). Set this or use_sfdx, not both.
+    description: Use only Salesforce SF CLI, not SFDX CLI (default is true). Set this or use_sfdx, not both.
     required: true
   use_sfdx:
-    description: Use only Salesforce SFDX CLI, not SF CLI (default: false). Set this or use_sf, not both.
+    description: Use only Salesforce SFDX CLI, not SF CLI (default is false). Set this or use_sf, not both.
     required: false
 
   # command
@@ -95,7 +95,6 @@ runs:
       run: |
         echo "ERROR : You cannot set both 'use_sf' and 'use_sfdx' to true"
         exit 1
-
 
     #################################################################################################################################
     # Run command (sfdx or other)

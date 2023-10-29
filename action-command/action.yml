@@ -53,7 +53,7 @@ runs:
         echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
 
     - name: Should not set use_sf and use_sfdx
-      if: "${{ inputs.use_sfdx }}"=="true" && ${"{ inputs.use_sf }}"=="true"
+      if: "${{ inputs.use_sfdx }}"=="true" && "${{ inputs.use_sf }}"=="true"
       shell: bash
       run: |
         echo "ERROR : You ned to set 'use_sf' or 'use_sfdx' to true, but not both"

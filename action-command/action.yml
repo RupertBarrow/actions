@@ -28,10 +28,10 @@ inputs:
     required: false
   use_sf:
     description: Use only Salesforce SF CLI, not SFDX CLI (default is true). Set this or use_sfdx, not both.
-    required: true
+    default: true
   use_sfdx:
     description: Use only Salesforce SFDX CLI, not SF CLI (default is false). Set this or use_sf, not both.
-    required: false
+    default: false
 
   # command
   command:

@@ -53,7 +53,7 @@ runs:
         echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
 
     - name: Authenticate with SFDX
-      if: ${{ inputs.use_sfdx == 'true'}} && ${{ inputs.use_sf == 'false'}}
+      if: ${{ inputs.use_sfdx }} && !${{ inputs.use_sf }}
       shell: bash
       run: |
         if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
@@ -75,7 +75,7 @@ runs:
         rm -f ./sfdxauthurl.txt
 
     - name: Authenticate with SF
-      if: ${{ inputs.use_sf == 'true'}} && ${{ inputs.use_sfdx == 'false'}}
+      if: ${{ inputs.use_sf }} && !${{ inputs.use_sfdx }}
       shell: bash
       run: |
         if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
@@ -90,10 +90,10 @@ runs:
         rm -f ./sfdxauthurl.txt
 
     - name: Should not set use_sf and use_sfdx
-      if: ${{ inputs.use_sfdx == 'true'}} && ${{ inputs.use_sf == 'true'}}
+      if: (${{ inputs.use_sfdx }} && ${{ inputs.use_sf }}) || (!${{ inputs.use_sfdx }} && !${{ inputs.use_sf }})
       shell: bash
       run: |
-        echo "ERROR : You cannot set both 'use_sf' and 'use_sfdx' to true"
+        echo "ERROR : You ned to set 'use_sf' or 'use_sfdx' to true, but not both"
         exit 1
 
     #################################################################################################################################

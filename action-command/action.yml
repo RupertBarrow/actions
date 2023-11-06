@@ -55,16 +55,14 @@ runs:
     - name: Authenticate with SF
       shell: bash
       run: |
-        echo "USING SF"
         if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
         then
           echo "ERROR : Salesforce DX auth url is mandatory"
           exit 1
         else
-          echo sf org login sfdx-url -f ./sfdxauthurl.txt -s -a checkout
-          sf org login sfdx-url -f ./sfdxauthurl.txt -s -a checkout
+          echo sf org login sfdx-url -f ./sfdxauthurl.txt --set-default --alias checkout
+          sf org login sfdx-url -f ./sfdxauthurl.txt --set-default --alias checkout
         fi
-        sf config set defaultusername=checkout
         rm -f ./sfdxauthurl.txt
 
     #################################################################################################################################

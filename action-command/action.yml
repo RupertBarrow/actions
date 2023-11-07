@@ -32,6 +32,10 @@ inputs:
   use_sfdx:
     description: Use only Salesforce SFDX CLI, not SF CLI (default is false). Set this or use_sf, not both.
     default: false
+  home:
+    description: Set HOME env variable (default is /github/home)
+    default: "/github/home"
+    required: false
 
   # command
   command:
@@ -55,6 +59,7 @@ runs:
     - name: Authenticate with SF
       shell: bash
       run: |
+        export HOME=${{ inputs.home }}
         if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
         then
           echo "ERROR : Salesforce DX auth url is mandatory"
@@ -72,4 +77,4 @@ runs:
     - name: Run command ${{ inputs.command }}
       shell: bash
       run: |
-        ${{ inputs.command }}
+        HOME=${{ inputs.home }} ${{ inputs.command }}

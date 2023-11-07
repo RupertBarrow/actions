@@ -77,4 +77,4 @@ runs:
     - name: Run command ${{ inputs.command }}
       shell: bash
       run: |
-        HOME=${{ inputs.home }} ${{ inputs.command }}
+        export HOME=${{ inputs.home }}; ${{ inputs.command }}

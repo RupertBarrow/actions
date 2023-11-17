@@ -20,6 +20,10 @@ on:
       flow-task-options:
         required: false
         type: string
+      delete-scratch-org:
+        required: false
+        type: boolean
+        default: true
     secrets:
       dev-hub-auth-url:
         required: true
@@ -31,7 +35,7 @@ jobs:
     # Run Flow in scratch org
     runs-on: ubuntu-latest
     steps:
-      - uses: RupertBarrow/cumulus-action-run-flow-scratch@main
+      - uses: RupertBarrow/cumulus-action-run-flow-scratch@6-make-deletion-of-scratch-org-optionnal
         with:
           dev-hub-auth-url: "${{ secrets.dev-hub-auth-url }}"
           cumulusci-service-github: "${{ secrets.cumulusci-service-github }}"
@@ -40,3 +44,4 @@ jobs:
           flow-name: "${{ inputs.flow-name }}"
           flow-task-options: "${{ inputs.flow-task-options }}"
           org-name: "${{ inputs.org-name }}"
+          delete-scratch-org: ${{ inputs.delete-scratch-org }}

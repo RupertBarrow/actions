@@ -47,6 +47,7 @@ runs:
     - name: Run command ${{ inputs.command }}
       shell: bash
       run: |
+        set -x
         export HOME=${{ inputs.home }}
-        result=$( ${{ inputs.command }} )
-        echo "result=${result}" >> $GITHUB_OUTPUT
+        res=$( ${{ inputs.command }} )
+        echo "result=${res}" >> $GITHUB_OUTPUT

@@ -55,11 +55,5 @@ runs:
       run: |
         set -x
         export HOME=${{ inputs.home }}
-        echo result='$( ${{ inputs.command }} )' >> "$GITHUB_OUTPUT"
+        echo result=$( ${{ inputs.command }} ) >> "$GITHUB_OUTPUT"
         echo $result
-
-    - name: Output command result to an annotation
-      uses: dkhunt27/action-annotations@v1
-      with:
-        type: notice
-        msg: ${{ steps.command.outputs.result }}

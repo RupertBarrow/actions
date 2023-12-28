@@ -1,43 +1,19 @@
 name: Run command
 
 # Salesforce login parameters.
-# Login with :
-# - either salesforce_url, salesforce_username, salesforce_password and salesforce_security_token
-# - or salesforce_url, salesforce_username, salesforce_password without salesforce_security_token
-# - or salesforce_sfdx_auth_url (get this with : sfdx force:org:display -u bprofilers-prod --verbose)
-# - (tbc : or with salesforce_accesstoken)
+# Login with : salesforce_sfdx_auth_url (get this with : sfdx force:org:display -u myorg --verbose)
 
 inputs:
-  # NB : checkout on the branch must be done by the caller
-
-  # Authentication
   salesforce_url:
     description: Salesforce org url (best with mydomain.my.salesforce.com, mydomain-dev-ed.my.salesforce ou mydomain--mysandbvox.my.salesforce.com
-    required: false
-  salesforce_username:
-    description: Salesforce org admin username
-    required: false
-  salesforce_password:
-    description: Salesforce org admin password
-    required: false
-  salesforce_security_token:
-    description: Salesforce security toker
     required: false
   salesforce_sfdx_auth_url:
     description: Salesforce SFDX auth URL
     required: false
-  use_sf:
-    description: Use only Salesforce SF CLI, not SFDX CLI (default is true). Set this or use_sfdx, not both.
-    default: true
-  use_sfdx:
-    description: Use only Salesforce SFDX CLI, not SF CLI (default is false). Set this or use_sf, not both.
-    default: false
   home:
     description: Set HOME env variable (default is /github/home)
     default: "/github/home"
     required: false
-
-  # command
   command:
     description: run this command (sfdx or other) in bash
     required: true
@@ -51,11 +27,6 @@ runs:
     # AUTHENTICATION
     #
 
-    - name: Store SFDX auth URL
-      shell: bash
-      run: |
-        echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
-
     - name: Authenticate with SF
       shell: bash
       run: |
@@ -65,10 +36,9 @@ runs:
           echo "ERROR : Salesforce DX auth url is mandatory"
           exit 1
         else
-          echo sf org login sfdx-url -f ./sfdxauthurl.txt --set-default --alias checkout
-          sf org login sfdx-url -f ./sfdxauthurl.txt --set-default --alias checkout
+          echo sf org login sfdx-url --set-default --alias checkout
+          sf org login sfdx-url --set-default --alias checkout -f <(echo "${{ inputs.salesforce_sfdx_auth_url }}")
         fi
-        rm -f ./sfdxauthurl.txt
 
     #################################################################################################################################
     # Run command (sf, sfdx or other)
@@ -77,4 +47,6 @@ runs:
     - name: Run command ${{ inputs.command }}
       shell: bash
       run: |
-        export HOME=${{ inputs.home }}; ${{ inputs.command }}
+        export HOME=${{ inputs.home }}
+        result=$( ${{ inputs.command }} )
+        echo "result=${result}" >> $GITHUB_OUTPUT

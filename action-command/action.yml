@@ -55,5 +55,6 @@ runs:
       run: |
         set -x
         export HOME=${{ inputs.home }}
-        echo result=$( ${{ inputs.command }} ) >> "$GITHUB_OUTPUT"
+        result=$( ${{ inputs.command }} )
         echo $result
+        echo result=$result >> "$GITHUB_OUTPUT"

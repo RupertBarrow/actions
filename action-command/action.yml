@@ -50,13 +50,21 @@ runs:
     #
 
     - name: Run command ${{ inputs.command }}
-      id: command
       shell: bash
       run: |
         set -x
         export HOME=${{ inputs.home }}
-        result=$( ${{ inputs.command }} )
+        ${{ inputs.command }} 2>&1 | tee output.log
 
+        #result=$( ${{ inputs.command }} )
+        #echo "result<<EOF" >> "$GITHUB_OUTPUT"
+        #echo $result >> "$GITHUB_OUTPUT"
+        #echo "EOF" >> "$GITHUB_OUTPUT"
+
+    - name: Return results
+      if: ${{ always() }}
+      shell: bash
+      run: |
         echo "result<<EOF" >> "$GITHUB_OUTPUT"
-        echo $result >> "$GITHUB_OUTPUT"
+        cat output.log >> "$GITHUB_OUTPUT"
         echo "EOF" >> "$GITHUB_OUTPUT"

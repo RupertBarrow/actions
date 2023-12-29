@@ -18,11 +18,6 @@ inputs:
     description: run this command (sfdx or other) in bash
     required: true
 
-outputs:
-  result:
-    description: "Command result"
-    value: ${{ steps.command.outputs.result }}
-
 runs:
   using: "composite"
   steps:
@@ -69,3 +64,8 @@ runs:
         echo "result<<EOF" >> "$GITHUB_OUTPUT"
         cat output.log >> "$GITHUB_OUTPUT"
         echo "EOF" >> "$GITHUB_OUTPUT"
+
+outputs:
+  result:
+    description: "Command result"
+    value: ${{ steps.command.outputs.result }}

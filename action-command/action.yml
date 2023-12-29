@@ -62,7 +62,7 @@ runs:
       shell: bash
       run: |
         echo "result<<EOF" >> "$GITHUB_OUTPUT"
-        cat output.log >> "$GITHUB_OUTPUT"
+        (cat output.log | grep -v "Warning: @salesforce/cli") >> "$GITHUB_OUTPUT"
         echo "EOF" >> "$GITHUB_OUTPUT"
 
 outputs:

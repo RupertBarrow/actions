@@ -63,6 +63,7 @@ runs:
 
     - name: Return results
       if: ${{ always() }}
+      id: command
       shell: bash
       run: |
         echo "result<<EOF" >> "$GITHUB_OUTPUT"

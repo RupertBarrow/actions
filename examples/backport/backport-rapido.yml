@@ -1,0 +1,144 @@
+# Backport from `main` branch to feature branches :
+# - triggers when a PR is closed on `main`
+# - feature branches named `feature/*`
+# - one PR is created/updated for every feature branch, but not merged automatically
+#
+# Also, backport from `release` branch to `main` branch :
+# - triggers when a release has finished building, to backport `CHANGELOG.md` and `package.json` to `main`
+# - automatically merge this PR
+#
+
+name: Backport
+
+on:
+  workflow_dispatch:
+
+  # Trigger when a PR is closed on main
+  pull_request_target:
+    branches: ["main"]
+    types: [closed]
+
+  # Trigger when a release has finished building, to backport CHANGELOG.md and package.json to main
+  workflow_run:
+    workflows: [Release]
+    types: [completed]
+
+env:
+  MAIN_BRANCH: main
+  RELEASE_BRANCH: release
+  FEATURE_BRANCH_PREFIX: "origin/feature/"
+
+permissions:
+  contents: write # so it can comment
+  pull-requests: write # so it can create pull requests
+
+jobs:
+  #---------------------------------------------------
+  list_branches:
+    name: Get target branches
+    runs-on: ubuntu-latest
+    outputs:
+      branches: ${{ steps.branches.outputs.BRANCHES }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Fetch all branches
+          fetch-depth: 0
+
+      - name: List feature branches
+        id: feature_branches
+        # list all branches, filtering for prefix, and cutting off remotes/origin/
+        # then finally substitute newlines for spaces, excluding from the list the source branch which triggered the action
+        run: |
+          set -x
+          branches=$(git branch --list --all | grep "$FEATURE_BRANCH_PREFIX" | cut -c 18- | while read -r line
+          do
+            # in case of commit : if found branch is not the one we are committing on (GITHUB_REF_NAME)
+            # in case of pull request : if found branch is not the one we are pulling from (GITHUB_HEAD_REF)
+            if [ "$line" != "$GITHUB_REF_NAME" ] && [ "$line" != "$GITHUB_HEAD_REF" ]
+            then
+              echo \"$line\"","
+            fi
+          done
+          )
+          space_delimited=${branches//$'\n'/ }
+          echo "FEATURE_BRANCHES=[ ${space_delimited} ]" >> $GITHUB_OUTPUT
+          echo "FEATURE_BRANCHES=[ ${space_delimited} ]"
+
+      - name: Select branches according to input branch
+        id: branches
+        shell: bash
+        run: |
+          case "$GITHUB_REF_NAME" in
+            #"$MAIN_BRANCH")
+            #  branches='[ "'$UAT_BRANCH'" ]'
+            #  ;;
+            #"$UAT_BRANCH")
+            #  branches='[ "'$INTEG_BRANCH'" ]'
+            #  ;;
+            #"$INTEG_BRANCH")
+            #  branches='${{ steps.feature_branches.outputs.FEATURE_BRANCHES }}'
+            #  ;;
+            "$RELEASE_BRANCH")
+              branches='[ "'$MAIN_BRANCH'" ]'
+              ;;
+            "$MAIN_BRANCH")
+              branches='${{ steps.feature_branches.outputs.FEATURE_BRANCHES }}'
+              ;;
+          esac
+          echo "BRANCHES=${branches}" >> $GITHUB_OUTPUT
+          echo "BRANCHES=${branches}"
+
+  #---------------------------------------------------
+  #my_echo:
+  #  runs-on: ubuntu-latest
+  #  needs:
+  #    - list_branches
+  #  steps:
+  #    - name: Target branch(es)
+  #      run: |
+  #        echo "${{ needs.list_branches.outputs.branches }}"
+  #        echo "${{ fromJSON(needs.list_branches.outputs.branches) }}"
+
+  #---------------------------------------------------
+  # see https://thekevinwang.com/2021/09/19/github-actions-dynamic-matrix/
+  backport:
+    name: Backport ${{ github.ref_name }} to ${{ matrix.branch }}
+    runs-on: ubuntu-latest
+    needs: [list_branches]
+    strategy:
+      # If one job fails, the whole job fails
+      fail-fast: false
+      matrix:
+        branch: ${{ fromJSON(needs.list_branches.outputs.branches) }}
+    steps:
+      - run: echo ${{ matrix.branch }}
+      - uses: actions/checkout@v4
+        with:
+          # Fetch all branches
+          fetch-depth: 0
+
+      - name: Backport from source to target branch(es)
+        id: pr
+        uses: rupertbarrow/cm-backport-pr@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pr-from-branch: ${{ github.repository_owner }}:${{ github.ref_name }}
+          pr-to-branch: ${{ matrix.branch }}
+          pr-title: Backport from branch ${{ github.ref_name }} to branch ${{ matrix.branch }}
+          #pr-body: "The PR body."
+          pr-fail-if-exists: false
+          pr-update-if-exists: true
+          maintainer-can-modify: true
+          draft: false
+          # Merge automatically if the PR is created from the release branch
+          merge-pr-after-created: ${{ github.ref_name == 'release' }}
+          merge-commit-title: "Backport release to main (CI)"
+          merge-commit-body: "Update package.json version and CHANGELOG.md"
+          merge-method: merge
+
+      - name: Pull request ${{ steps.pr.outputs.pr-number }} created/updated ${{ steps.pr.outputs.pr-url }}
+        run: |
+          echo "PR Number: ${{ steps.pr.outputs.pr-number }}"
+          echo "PR URL: ${{ steps.pr.outputs.pr-url }}"
+          echo "PR SHA: ${{ steps.pr.outputs.pr-sha }}"

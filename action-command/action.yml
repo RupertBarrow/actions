@@ -69,7 +69,7 @@ runs:
         echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
 
         echo sfdx auth sfdxurl store -f ./sfdxauthurl.txt -s -a checkout
-        sfdx auth sfdxurl store -f ./sfdxauthurl.txt -s -a checkout
+        sfdx.     auth sfdxurl store -f ./sfdxauthurl.txt -s -a checkout
 
         sfdx config set defaultusername=checkout
         rm -f ./sfdxauthurl.txt
@@ -87,8 +87,8 @@ runs:
       if: ${{ !inputs.salesforce_security_token && inputs.salesforce_password }}
       shell: bash
       run: |
-        echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
-        sfdx      sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
+        echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
+        sfdx      sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
 
         sfdx config set defaultusername=checkout
 
@@ -98,8 +98,8 @@ runs:
       run: |
         echo "${{ inputs.private_key }}" > /tmp/server.key
 
-        echo sf org login jwt --client-id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }}
-        sf      org login jwt --client-id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }}
+        echo sf org login jwt --client-id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }} -a checkout
+        sf      org login jwt --client-id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }} -a checkout
 
         sf config set target-org=checkout
         rm -f /tmp/server.key

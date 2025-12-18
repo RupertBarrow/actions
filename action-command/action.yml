@@ -35,16 +35,13 @@ inputs:
   #
   # We will run :
   # echo ${{ private_key }} > ./server.key
-  # sf org login jwt --client_id ${{ client_id }} --jwt-key-file ./server.key --username ${{ salesforce_username }} --instance-url ${{ salesforce_url }} --alias ${{ salesforce_org_alias }}
+  # sf org login jwt --client_id ${{ client_id }} --jwt-key-file ./server.key --username ${{ salesforce_username }} --instance-url ${{ salesforce_url }}
   # rm ./server.key
   client_id:
     description: Client ID (consumer key) of the Salesforce connected App
     required: false
   private_key:
     description: Private JWT key used to authenticate the Salesforce connected app
-    required: false
-  salesforce_org_alias:
-    description: Alias used to refer to this org later
     required: false
 
   # command
@@ -95,19 +92,8 @@ runs:
 
         sfdx config set defaultusername=checkout
 
-    - name: Authenticate via JWT (with alias)
-      if: ${{ inputs.private_key && inputs.salesforce_org_alias }}
-      shell: bash
-      run: |
-        echo ${{ inputs.private_key }} > /tmp/server.key
-
-        echo sf org login jwt --client_id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }} --alias ${{ salesforce_org_alias }}
-        sf      org login jwt --client_id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }} --alias ${{ salesforce_org_alias }}
-
-        rm -f /tmp/server.key
-
     - name: Authenticate via JWT (without alias)
-      if: ${{ inputs.private_key && !inputs.salesforce_org_alias }}
+      if: ${{ inputs.private_key }}
       shell: bash
       run: |
         echo ${{ inputs.private_key }} > /tmp/server.key

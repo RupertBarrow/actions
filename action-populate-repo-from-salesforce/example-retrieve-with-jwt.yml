@@ -18,9 +18,9 @@ jobs:
     # - add branch names to be processed in the "branch" array below
     # - for each branch, create GitHub secrets for :
     #   . salesforce_url (eg https://mydomain.my.salesforce.com or https://mydomain--sdbxname.my.salesforce.com)
+    #   . salesforce_username
     #   . client_id: Client ID (consumer key) of the Salesforce connected App
     #   . private_key: private JWT key used to authenticate the Salesforce connected app
-    #   . salesforce_org_alias: Alias used to refer to this org later
 
     strategy:
       matrix:

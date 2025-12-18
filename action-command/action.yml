@@ -98,8 +98,8 @@ runs:
       run: |
         echo "${{ inputs.private_key }}" > /tmp/server.key
 
-        echo sf org login jwt --client_id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }}
-        sf      org login jwt --client_id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }}
+        echo sf org login jwt --client-id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }}
+        sf      org login jwt --client-id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }}
 
         sfdx config set defaultusername=checkout
         rm -f /tmp/server.key

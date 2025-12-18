@@ -42,7 +42,7 @@ jobs:
     # Do not edit below this line
 
     #container: salesforce/salesforcedx:7.205.6-full
-    container: salesforce/cli:2.118.6-full
+    container: salesforce/cli:2.116.6-full
     runs-on: ubuntu-latest
 
     steps:          

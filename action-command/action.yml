@@ -92,7 +92,7 @@ runs:
 
         sfdx config set defaultusername=checkout
 
-    - name: Authenticate via JWT (without alias)
+    - name: Authenticate via JWT
       if: ${{ inputs.private_key }}
       shell: bash
       run: |
@@ -101,7 +101,7 @@ runs:
         echo sf org login jwt --client-id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }}
         sf      org login jwt --client-id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }}
 
-        sfdx config set defaultusername=checkout
+        sf config set target-org=checkout
         rm -f /tmp/server.key
 
     #################################################################################################################################

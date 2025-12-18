@@ -51,12 +51,11 @@ inputs:
     default: 60
     required: false
 
-# TODO : add version number to RupertBarrow/actions/action-command
 runs:
   using: "composite"
   steps:
     - name: Retrieve source from Salesforce organization without input package.xml
-      uses: RupertBarrow/actions/action-command@main
+      uses: RupertBarrow/actions/action-command@v4
       if: ${{ ! inputs.package_xml }}
       with:
         salesforce_url: ${{ inputs.salesforce_url }}
@@ -66,7 +65,7 @@ runs:
         command: set -x && sfdx project generate manifest --from-org=checkout --output-dir manifest --name package-snapshot-fromorg.xml && sfdx project retrieve start --manifest manifest/package-snapshot-fromorg.xml --wait ${{ inputs.timeout }}
 
     - name: Retrieve source from Salesforce organization with input package.xml
-      uses: RupertBarrow/actions/action-command@main
+      uses: RupertBarrow/actions/action-command@v4
       if: ${{ inputs.package_xml }}
       with:
         salesforce_url: ${{ inputs.salesforce_url }}

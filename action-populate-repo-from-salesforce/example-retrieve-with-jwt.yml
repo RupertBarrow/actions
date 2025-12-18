@@ -55,9 +55,8 @@ jobs:
       - name: Clean local directory
         run: pwd && rm -rf force-app/*
 
-      # TODO : add version here
       - name: Get Salesforce metadata from org
-        uses: RupertBarrow/actions/action-populate-repo-from-salesforce@main
+        uses: RupertBarrow/actions/action-populate-repo-from-salesforce@v4
         with:
          salesforce_url:            ${{ secrets[matrix.salesforce_url] }}
          salesforce_username:       ${{ secrets[matrix.salesforce_username] }}

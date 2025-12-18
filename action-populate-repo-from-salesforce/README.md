@@ -20,12 +20,14 @@ on:
 jobs:    
   oncreate:
     name: Retrieve Salesforce metadata to Github on the prod and qa branches
-    
+        
     ############################################################################################################################
     # - add branch names to be processed in the "branch" array below
     # - for each branch, create GitHub secrets for :
     #   . salesforce_url (eg https://mydomain.my.salesforce.com or https://mydomain--sdbxname.my.salesforce.com)
-    #   . salesforce_sfdx_auth_url (result of this command : sfdx force:org:display --verbose --json | jq '.result.sfdxAuthUrl')
+    #   . salesforce_username
+    #   . client_id: Client ID (consumer key) of the Salesforce connected App
+    #   . private_key: private JWT key used to authenticate the Salesforce connected app
 
     strategy:
       matrix:
@@ -33,21 +35,24 @@ jobs:
         include:
           - branch: prod
             salesforce_url:           SALESFORCE_URL_PROD
-            salesforce_sfdx_auth_url: SALESFORCE_SFDXURL_PROD
+            salesforce_username:      SALESFORCE_USERNAME_PROD
+            client_id:                SALESFORCE_CLIENT_ID_PROD
+            private_key:              SALESFORCE_PRIVATE_KEY_PROD
             # no package_xml specified : retrieve all metadata
           - branch: qa
             salesforce_url:           SALESFORCE_URL_QA
-            salesforce_sfdx_auth_url: SALESFORCE_SFDXURL_QA
-            package_xml:              manifest/package-qa.xml
+            salesforce_username:      SALESFORCE_USERNAME_QA
+            client_id:                SALESFORCE_CLIENT_ID_QA
+            private_key:              SALESFORCE_PRIVATE_KEY_QA
 
     ############################################################################################################################
     # Do not edit below this line
 
-    container: salesforce/salesforcedx:7.205.6-full
+    container: salesforce/cli:2.116.6-full
     runs-on: ubuntu-latest
 
     steps:          
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           ref:                  ${{ matrix.branch }}
           persist-credentials:  false
@@ -57,10 +62,12 @@ jobs:
         run: pwd && rm -rf force-app/*
 
       - name: Get Salesforce metadata from org
-        uses: RupertBarrow/actions/action-populate-repo-from-salesforce@v3
+        uses: RupertBarrow/actions/action-populate-repo-from-salesforce@v4
         with:
          salesforce_url:            ${{ secrets[matrix.salesforce_url] }}
-         salesforce_sfdx_auth_url:  ${{ secrets[matrix.salesforce_sfdx_auth_url] }}
+         salesforce_username:       ${{ secrets[matrix.salesforce_username] }}
+         client_id:                 ${{ secrets[matrix.client_id] }}
+         private_key:               ${{ secrets[matrix.private_key] }}
          #package_xml:               ${{ matrix.package_xml }}
          do_git_add:                true
          do_git_commit:             true
@@ -72,4 +79,3 @@ jobs:
          branch:        ${{ matrix.branch }}
          directory:     '.'
          force:         true
-```

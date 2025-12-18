@@ -1,0 +1,75 @@
+# .github/workflows/retrieve.yml
+# see https://github.com/RupertBarrow/actions/blob/main/action-populate-repo-from-salesforce/README.md
+
+name: EXAMPLE to Retrieve Salesforce metadata with JWT login
+on:
+  # Trigger this manually
+  workflow_dispatch:
+  
+  # Trigger on schedule every night (1 am UTC)
+  schedule:
+    - cron: '00 01 * * *'
+
+jobs:    
+  oncreate:
+    name: Retrieve Salesforce metadata to Github on the prod and qa branches
+    
+    ############################################################################################################################
+    # - add branch names to be processed in the "branch" array below
+    # - for each branch, create GitHub secrets for :
+    #   . salesforce_url (eg https://mydomain.my.salesforce.com or https://mydomain--sdbxname.my.salesforce.com)
+    #   . client_id: Client ID (consumer key) of the Salesforce connected App
+    #   . private_key: private JWT key used to authenticate the Salesforce connected app
+    #   . salesforce_org_alias: Alias used to refer to this org later
+
+    strategy:
+      matrix:
+        branch: [prod, qa]
+        include:
+          - branch: prod
+            salesforce_url:           SALESFORCE_URL_PROD
+            salesforce_username:      SALESFORCE_USERNAME_PROD
+            client_id:                SALESFORCE_CLIENT_ID_PROD
+            private_key:              SALESFORCE_PRIVATE_KEY_PROD
+            # no package_xml specified : retrieve all metadata
+          - branch: qa
+            salesforce_url:           SALESFORCE_URL_QA
+            salesforce_username:      SALESFORCE_USERNAME_QA
+            client_id:                SALESFORCE_CLIENT_ID_QA
+            private_key:              SALESFORCE_PRIVATE_KEY_QA
+
+    ############################################################################################################################
+    # Do not edit below this line
+
+    #container: salesforce/salesforcedx:7.205.6-full
+    container: salesforce/cli:2.118.6-full
+    runs-on: ubuntu-latest
+
+    steps:          
+      - uses: actions/checkout@v6
+        with:
+          ref:                  ${{ matrix.branch }}
+          persist-credentials:  false
+          fetch-depth:          0
+
+      - name: Clean local directory
+        run: pwd && rm -rf force-app/*
+
+      - name: Get Salesforce metadata from org
+        uses: RupertBarrow/actions/action-populate-repo-from-salesforce@feature/60-jwt-login-for-connected-app
+        with:
+         salesforce_url:            ${{ secrets[matrix.salesforce_url] }}
+         salesforce_username:       ${{ secrets[matrix.salesforce_username] }}
+         client_id:                 ${{ secrets[matrix.client_id] }}
+         private_key:               ${{ secrets[matrix.private_key] }}
+         #package_xml:               ${{ matrix.package_xml }}
+         do_git_add:                true
+         do_git_commit:             true
+  
+      - name: Push all metadata to repo
+        uses: ad-m/github-push-action@master
+        with:
+         github_token:  ${{ secrets.GITHUB_TOKEN }}
+         branch:        ${{ matrix.branch }}
+         directory:     '.'
+         force:         true

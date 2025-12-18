@@ -2,9 +2,10 @@ name: Run command
 
 # Salesforce login parameters.
 # Login with :
-# - either salesforce_url, salesforce_username, salesforce_password and salesforce_security_token
-# - or salesforce_url, salesforce_username, salesforce_password without salesforce_security_token
-# - or salesforce_sfdx_auth_url (get this with : sfdx force:org:display -u bprofilers-prod --verbose)
+# - OBSOLETE : either salesforce_url, salesforce_username, salesforce_password and salesforce_security_token
+# - OBSOLETE : or salesforce_url, salesforce_username, salesforce_password without salesforce_security_token
+# - OBSOLETE : or salesforce_sfdx_auth_url (get this with : sfdx force:org:display -u bprofilers-prod --verbose)
+# - or JWT : salesforce_url, salesforce_username, client_id, private_key
 # - (tbc : or with salesforce_accesstoken)
 
 inputs:
@@ -17,14 +18,30 @@ inputs:
   salesforce_username:
     description: Salesforce org admin username
     required: false
-  salesforce_password:
-    description: Salesforce org admin password
+  # salesforce_password:
+  #   description: Salesforce org admin password
+  #   required: false
+  # salesforce_security_token:
+  #   description: Salesforce security token
+  #   required: false
+  # salesforce_sfdx_auth_url:
+  #   description: Salesforce SFDX auth URL
+  #   required: false
+  
+  # JWT Authentication
+  # see https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_jwt_flow.htm
+  # See also how to log in to a newly created scratch org with JWT :
+  # https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_jwt_flow.htm#sfdx_dev_auth_jwt_scratch
+  #
+  # We will run :
+  # echo ${{ private_key }} > ./server.key
+  # sf org login jwt --client_id ${{ client_id }} --jwt-key-file ./server.key --username ${{ salesforce_username }} --instance-url ${{ salesforce_url }}
+  # rm ./server.key
+  client_id:
+    description: Client ID (consumer key) of the Salesforce connected App
     required: false
-  salesforce_security_token:
-    description: Salesforce security toker
-    required: false
-  salesforce_sfdx_auth_url:
-    description: Salesforce SFDX auth URL
+  private_key:
+    description: Private JWT key used to authenticate the Salesforce connected app
     required: false
 
   # command
@@ -44,28 +61,48 @@ runs:
     - name: Store SFDX auth URL
       shell: bash
       run: |
-        echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
 
-    - name: Authenticate
+    - name: Authenticate via SFDX AuthUrl
+      if: ${{ inputs.salesforce_sfdx_auth_url }}
       shell: bash
       run: |
-        if [ -z "${{ inputs.salesforce_sfdx_auth_url }}" ]
-        then
-          echo 'y' | sfdx plugins add sfpowerkit
-          if [ -z "${{ inputs.salesforce_security_token }}" ]
-          then
-            echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
-            sfdx      sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -a checkout
-          else
-            echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
-            sfdx      sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
-          fi
-        else
-          echo sfdx auth sfdxurl store -f ./sfdxauthurl.txt -s -a checkout
-          sfdx auth sfdxurl store -f ./sfdxauthurl.txt -s -a checkout
-        fi
+        echo ${{ inputs.salesforce_sfdx_auth_url }} > ./sfdxauthurl.txt
+
+        echo sfdx auth sfdxurl store -f ./sfdxauthurl.txt -s -a checkout
+        sfdx auth sfdxurl store -f ./sfdxauthurl.txt -s -a checkout
+
         sfdx config set defaultusername=checkout
         rm -f ./sfdxauthurl.txt
+
+    - name: Authenticate via Username/Password/Security Token
+      if: ${{ inputs.salesforce_security_token }}
+      shell: bash
+      run: |
+        echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
+        sfdx      sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }} -s ${{ inputs.salesforce_security_token }} -a checkout
+
+        sfdx config set defaultusername=checkout
+
+    - name: Authenticate via Username/Password
+      if: ${{ !inputs.salesforce_security_token && inputs.salesforce_password }}
+      shell: bash
+      run: |
+        echo sfdx sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
+        sfdx      sfpowerkit:auth:login -r ${{ inputs.salesforce_url }} -u ${{ inputs.salesforce_username }} -p ${{ inputs.salesforce_password }}
+
+        sfdx config set defaultusername=checkout
+
+    - name: Authenticate via JWT (without alias)
+      if: ${{ inputs.private_key }}
+      shell: bash
+      run: |
+        echo ${{ inputs.private_key }} > /tmp/server.key
+
+        echo sf org login jwt --client_id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }}
+        sf      org login jwt --client_id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }}
+
+        sfdx config set defaultusername=checkout
+        rm -f /tmp/server.key
 
     #################################################################################################################################
     # Run command (sfdx or other)

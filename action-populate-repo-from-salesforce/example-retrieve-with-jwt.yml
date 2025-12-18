@@ -55,8 +55,9 @@ jobs:
       - name: Clean local directory
         run: pwd && rm -rf force-app/*
 
+      # TODO : add version here
       - name: Get Salesforce metadata from org
-        uses: RupertBarrow/actions/action-populate-repo-from-salesforce@feature/60-jwt-login-for-connected-app
+        uses: RupertBarrow/actions/action-populate-repo-from-salesforce
         with:
          salesforce_url:            ${{ secrets[matrix.salesforce_url] }}
          salesforce_username:       ${{ secrets[matrix.salesforce_username] }}

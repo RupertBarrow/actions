@@ -96,7 +96,7 @@ runs:
       if: ${{ inputs.private_key }}
       shell: bash
       run: |
-        echo ${{ inputs.private_key }} > /tmp/server.key
+        echo "${{ inputs.private_key }}" > /tmp/server.key
 
         echo sf org login jwt --client_id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }}
         sf      org login jwt --client_id ${{ inputs.client_id }} --jwt-key-file /tmp/server.key --username ${{ inputs.salesforce_username }} --instance-url ${{ inputs.salesforce_url }}
